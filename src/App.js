@@ -3,7 +3,6 @@ import Whiskeys from './components/Whiskeys.js'
 import './App.css';
 
 function App() {
-  
   const [whiskeys, setWhiskeys] = useState([])
   const [formInputs, updateFormInputs] = useState({
     name: '',
@@ -43,14 +42,30 @@ function App() {
   
   const getData = async() => {
   try {
-    const response = await fetch('http://localhost:3000/whiskeys')
+  const response = await fetch('http://localhost:3000/whiskeys')
   const whiskeyData = await response.json()
   setWhiskeys(whiskeyData)
   console.log(whiskeyData)
   } catch (error){
     console.log(error)
-  } 
-}
+    } 
+  }
+  const handleDelete = async (id) => {
+    try{
+      await fetch(`http://localhost:3000/whiskeys/${whiskeys.id}`, 
+        {
+        method:'DELETE',
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        console.log('Whiskey was removed')
+      })
+  }catch (error){
+    console.log(error)
+  }
+  }
+  
   useEffect(() => {
     (async function () {
         await getData();
@@ -68,7 +83,7 @@ function App() {
          <label htmlFor='distiller'>Distillery</label>
          <input type='text' id='distiller' value={formInputs.distiller}
          onChange={handleChange} />
-         <label htmLFor="origin">Origin</label>
+         <label htmlFor="origin">Origin</label>
          <input type='text' id='origin' value={formInputs.origin}
          onChange={handleChange}/>
          <label htmlFor='img'>Image</label>
@@ -78,7 +93,7 @@ function App() {
        </form>
      </nav>
       <main>
-        <Whiskeys whiskeyData = {whiskeys}/>
+        <Whiskeys whiskeyData = {whiskeys} handleDelete= {handleDelete}  />
       </main>
     </div>
   );
