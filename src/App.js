@@ -9,15 +9,36 @@ function App() {
     name: '',
     distiller: '',
     origin:'',
-    img:''
+    image:''
   })
   const handleChange = (event) =>{
     const updateInput = Object.assign({}, formInputs, { [event.target.id]: event.target.value})
     updateFormInputs(updateInput)
   }
-  const handleSubmit = (event) =>{
+  const handleSubmit = async (event) =>{
     event.preventDefault()
-    console.log(formInputs)
+    try {
+      const response = await fetch('http://localhost:3000/whiskeys', {
+        body: JSON.stringify(formInputs),
+        method:'POST',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        }
+      })
+      const data = await response.json()
+      updateFormInputs({
+        name: '',
+        distiller: '',
+        origin:'',
+        image:''
+      })
+      setWhiskeys([data, ...whiskeys])
+      console.log(formInputs)
+    }catch(error) {
+      console.log(error)
+    }
+    
   }
   
   const getData = async() => {
@@ -51,8 +72,9 @@ function App() {
          <input type='text' id='origin' value={formInputs.origin}
          onChange={handleChange}/>
          <label htmlFor='img'>Image</label>
-         <input type='text' id='img' value={formInputs.img}
+         <input type='text' id='image' value={formInputs.image}
          onChange={handleChange}/>
+         <input type="submit" className="submit"/>
        </form>
      </nav>
       <main>
