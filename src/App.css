@@ -6,11 +6,13 @@
   flex-direction: column;
   
 }
-/* body{
-  background-image: url('../imgs/background.webp')
-} */
+body{
+  background-image: url('./components/imgs/barrel.jpg');
+  size:cover;
+  repeat: no-repeat;
+}
 img{
-  max-width: 100%;
+  max-width: 75%;
   height:auto;
 }
 li{

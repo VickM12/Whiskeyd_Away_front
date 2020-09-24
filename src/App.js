@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import Whiskeys from './components/Whiskeys.js'
+import Whiskeys from './components/Whiskeys.js';
+import background from './components/imgs/barrel.jpg'
 import './App.css';
 
 function App() {
@@ -44,7 +45,7 @@ function App() {
   try {
   const response = await fetch('https://whiskey-api.herokuapp.com/whiskeys', 
   {
-    body: JSON.stringify(response),
+    body: JSON.stringify(),
     method:'GET',
     headers: {
       'Accept': 'application/json, text/plain, */*',
@@ -80,8 +81,9 @@ function App() {
 
   return (
     <div className="App">
+      {/* <img src={background} alt="barrel" /> */}
      <nav>
-       <h4>Submit a whiskey!</h4>
+       <h2>Submit a whiskey!</h2>
        <form className="new" onSubmit={handleSubmit}>
          <label htmlFor="name">Name</label>
          <input type='text' id='name' value={formInputs.name}
