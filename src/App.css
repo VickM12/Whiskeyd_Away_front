@@ -4,12 +4,13 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  
+  background-color: rgb(245, 245, 245, 0.3);
 }
 body{
   background-image: url('./components/imgs/barrel.jpg');
   size:cover;
   /* background-repeat: no-repeat; */
+  
 }
 .new{
   /* display: flex; */
@@ -22,6 +23,7 @@ img{
   max-width: 75%;
   height:auto;
 }
+
 li{
   text-decoration: none;
   list-style: none;
