@@ -9,7 +9,14 @@
 body{
   background-image: url('./components/imgs/barrel.jpg');
   size:cover;
-  repeat: no-repeat;
+  /* background-repeat: no-repeat; */
+}
+.new{
+  /* display: flex; */
+  align-content: center;
+  background-color: rgb(245, 245, 245, 0.5);
+  /* width: 80%; */
+  
 }
 img{
   max-width: 75%;
