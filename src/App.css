@@ -1,6 +1,17 @@
-* { border: solid gold 1px}
+/* * { border: solid gold 1px} */
+
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  
+}
+/* body{
+  background-image: url('../imgs/background.webp')
+} */
+img{
+  max-width: 100%;
+  height:auto;
 }
 li{
   text-decoration: none;

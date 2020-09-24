@@ -46,9 +46,7 @@ export default function Whiskeys(props) {
         <li><img src={whiskey.image} alt={whiskey.name} /></li>
         <li>{whiskey.distiller}</li>
         <li>{whiskey.origin}</li>
-      <form>
-      <input type='submit' value='Remove from List' onSubmit={props.handleDelete} />
-      </form> 
+      <button onClick={props.handleDelete}>Remove from List</button>
       </ul>
       
         )})

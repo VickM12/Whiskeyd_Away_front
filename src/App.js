@@ -58,9 +58,7 @@ function App() {
         headers:{
           'Content-Type': 'application/json'
         }
-      }).then((response) => {
-        console.log('Whiskey was removed')
-      })
+      }).then(response => response.json())
   }catch (error){
     console.log(error)
   }
@@ -76,7 +74,7 @@ function App() {
     <div className="App">
      <nav>
        <h4>Submit a whiskey!</h4>
-       <form onSubmit={handleSubmit}>
+       <form className="new" onSubmit={handleSubmit}>
          <label htmlFor="name">Name</label>
          <input type='text' id='name' value={formInputs.name}
          onChange={handleChange}/>
