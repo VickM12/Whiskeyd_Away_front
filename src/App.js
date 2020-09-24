@@ -17,7 +17,7 @@ function App() {
   const handleSubmit = async (event) =>{
     event.preventDefault()
     try {
-      const response = await fetch('http://localhost:3000/whiskeys', {
+      const response = await fetch('https://whiskey-api.herokuapp.com/whiskeys', {
         body: JSON.stringify(formInputs),
         method:'POST',
         headers: {
@@ -42,7 +42,7 @@ function App() {
   
   const getData = async() => {
   try {
-  const response = await fetch('http://localhost:3000/whiskeys')
+  const response = await fetch('https://whiskey-api.herokuapp.com/whiskeys')
   const whiskeyData = await response.json()
   setWhiskeys(whiskeyData)
   console.log(whiskeyData)
@@ -52,7 +52,7 @@ function App() {
   }
   const handleDelete = async (id) => {
     try{
-      await fetch(`http://localhost:3000/whiskeys/${whiskeys.id}`, 
+      await fetch(`https://whiskey-api.herokuapp.com/whiskeys${whiskeys.id}`, 
         {
         method:'DELETE',
         headers:{
