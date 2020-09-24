@@ -42,7 +42,7 @@ function App() {
   
   const getData = async() => {
   try {
-  const response = await fetch('http://whiskey-api.herokuapp.com/whiskeys', 
+  const response = await fetch('https://whiskey-api.herokuapp.com/whiskeys', 
   {
     body: JSON.stringify(response),
     method:'GET',
