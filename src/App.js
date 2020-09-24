@@ -17,7 +17,7 @@ function App() {
   const handleSubmit = async (event) =>{
     event.preventDefault()
     try {
-      const response = await fetch('http://whiskey-api.herokuapp.com/', {
+      const response = await fetch('https://whiskey-api.herokuapp.com/', {
         body: JSON.stringify(formInputs),
         method:'POST',
         headers: {
