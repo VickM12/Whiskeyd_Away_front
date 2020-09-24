@@ -42,7 +42,15 @@ function App() {
   
   const getData = async() => {
   try {
-  const response = await fetch('https://whiskey-api.herokuapp.com/')
+  const response = await fetch('https://whiskey-api.herokuapp.com/whiskeys', 
+  {
+    body: JSON.stringify(response),
+    method:'GET',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    }
+  })
   const whiskeyData = await response.json()
   setWhiskeys(whiskeyData)
   console.log(whiskeyData)
