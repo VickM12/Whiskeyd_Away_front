@@ -64,7 +64,7 @@ function App() {
   }
   const handleDelete = async (event) => {
     try{
-      await fetch(`${endpoint}/${whiskeys.id}`, 
+      await fetch(`${endpoint}/${whiskeys.match.params.id}`, 
         {
         method:'DELETE',
         headers:{

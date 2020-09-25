@@ -28,7 +28,7 @@ export default function Show(props) {
 		try {
 			const submission = { ...whiskey };
 						const response = await fetch(`${endpoint}/${props.match.params.id}`, {
-				method: 'PATCH',
+				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'
 				},
