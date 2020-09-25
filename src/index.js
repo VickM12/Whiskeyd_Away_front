@@ -46,9 +46,10 @@ ReactDOM.render(
 					/>
 				);
 			})}
+       <App />
 		</Switch>
 	</Router>,
-    <App />
+   
   </React.StrictMode>,
   document.getElementById('root')
 );
