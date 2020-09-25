@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import '../App.css'
 let endpoint = 'https://whiskey-api.herokuapp.com/whiskeys';
 
 export default function Show(props) {
