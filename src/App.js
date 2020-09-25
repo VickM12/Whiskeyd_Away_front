@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Whiskeys from './components/Whiskeys.js';
 import './App.css';
 import { Route, Link, BrowserRouter as Router } from "react-router-dom"
+let endpoint = "https://whiskey-api.herokuapp.com/whiskeys"
 // import background from './components/imgs/barrel.jpg'
 
 
@@ -20,7 +21,7 @@ function App() {
   const handleSubmit = async (event) =>{
     event.preventDefault()
     try {
-      const response = await fetch('https://whiskey-api.herokuapp.com/whiskeys', {
+      const response = await fetch(endpoint, {
         body: JSON.stringify(formInputs),
         method:'POST',
         headers: {
@@ -45,7 +46,7 @@ function App() {
   
   const getData = async() => {
   try {
-  const response = await fetch('https://whiskey-api.herokuapp.com/whiskeys', 
+  const response = await fetch(endpoint, 
   {
     body: JSON.stringify(),
     method:'GET',
@@ -63,7 +64,7 @@ function App() {
   }
   const handleDelete = async (event) => {
     try{
-      await fetch(`https://whiskey-api.herokuapp.com/whiskeys/${whiskeys.id}`, 
+      await fetch(`${endpoint}/${whiskeys.id}`, 
         {
         method:'DELETE',
         headers:{

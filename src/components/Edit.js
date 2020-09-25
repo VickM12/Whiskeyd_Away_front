@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../App.css'
-let endpoint = 'https://whiskey-api.herokuapp.com/whiskeys';
+let endpoint ="https://whiskey-api.herokuapp.com/whiskeys";
 
 export default function Show(props) {
 	const [whiskey, updateWhiskey] = useState({
@@ -28,7 +28,7 @@ export default function Show(props) {
 		try {
 			const submission = { ...whiskey };
 						const response = await fetch(`${endpoint}/${props.match.params.id}`, {
-				method: 'PUT',
+				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json'
 				},
