@@ -48,7 +48,7 @@ function App() {
   const getData = async() =>{
     try {
     const response = await fetch(endpoint)
-    console.log(response)
+    
     const whiskeyData = await response.json()
     setWhiskeys(whiskeyData)
        console.log(whiskeyData)
