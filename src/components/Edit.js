@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../App.css'
-let endpoint ="https://whiskey-api.herokuapp.com/whiskeys";
+let endpoint =process.env.MY_API;
 
 export default function Show(props) {
 	const [whiskey, updateWhiskey] = useState({
@@ -62,7 +62,7 @@ export default function Show(props) {
 				<h1>Nothing found on {props.match.params.id}.</h1>
 			)}
 			<form onSubmit={handleSubmit} className="task-form">
-				<h1> Edit Fruit Form </h1>
+				<h1> Edit Form </h1>
 				Name:{' '}
 				<input
 					type="text"

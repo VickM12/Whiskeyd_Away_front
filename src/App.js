@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Whiskeys from './components/Whiskeys.js';
 import './App.css';
 import { Route, Link, BrowserRouter as Router } from "react-router-dom"
-let endpoint = "https://whiskey-api.herokuapp.com/whiskeys"
+let endpoint = process.env.MY_API
 // import background from './components/imgs/barrel.jpg'
 
 
