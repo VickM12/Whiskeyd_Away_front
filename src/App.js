@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Whiskeys from './components/Whiskeys.js';
 import './App.css';
-import { Route, BrowserRouter as Router } from "react-router-dom"
+import { Route, Link, BrowserRouter as Router } from "react-router-dom"
 // import background from './components/imgs/barrel.jpg'
 
 
