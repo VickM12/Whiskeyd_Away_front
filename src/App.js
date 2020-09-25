@@ -2,11 +2,12 @@ import React, {useState, useEffect} from 'react';
 import Whiskeys from './components/Whiskeys.js';
 import './App.css';
 import { Route, Link, BrowserRouter as Router } from "react-router-dom"
-let endpoint = process.env.MY_API
+const endpoint = process.env.REACT_APP_API_KEY
 // import background from './components/imgs/barrel.jpg'
 
 
 function App() {
+  // console.log(endpoint)
   const [whiskeys, setWhiskeys] = useState([])
   const [formInputs, updateFormInputs] = useState({
     name: '',
@@ -21,7 +22,7 @@ function App() {
   const handleSubmit = async (event) =>{
     event.preventDefault()
     try {
-      const response = await fetch(endpoint, {
+      const response = await fetch('endpoint', {
         body: JSON.stringify(formInputs),
         method:'POST',
         headers: {
@@ -44,24 +45,37 @@ function App() {
     
   }
   
-  const getData = async() => {
-  try {
-  const response = await fetch(endpoint, 
-  {
-    body: JSON.stringify(),
-    method:'GET',
-    headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json'
-    }
-  })
-  const whiskeyData = await response.json()
-  setWhiskeys(whiskeyData)
-  console.log(whiskeyData)
-  } catch (error){
-    console.log(error)
-    } 
+  const getData = async() =>{
+    try {
+    const response = await fetch(endpoint)
+    console.log(response)
+    const whiskeyData = await response.json()
+    setWhiskeys(whiskeyData)
+       console.log(whiskeyData)
+  } catch (error) {
+    console.error(error)
   }
+}
+
+// const getData = async() => {
+// try {
+  // const response = await fetch('endpoint', 
+  // {
+  //   body: JSON.stringify(),
+  //   method:'GET',
+  //   headers: {
+  //     'Accept': 'application/json, text/plain, */*',
+  //     'Content-Type': 'application/json'
+  //   }
+  // })
+
+  // const whiskeyData = await response.json()
+  // await setWhiskeys(whiskeyData)
+  // console.log(whiskeyData)
+  // } catch (error){
+  //   console.log(error)
+  //   } 
+  // }
   const handleDelete = async (event) => {
     try{
       await fetch(`${endpoint}/${whiskeys.match.params.id}`, 
