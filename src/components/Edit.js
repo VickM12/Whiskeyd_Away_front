@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Route, Link, BrowserRouter as Router } from "react-router-dom"
 import '../App.css'
 
-let endpoint =process.env.MY_API;
+let endpoint =process.env.REACT_APP_API_KEY;
 
 export default function Show(props) {
 	const [whiskey, updateWhiskey] = useState({
@@ -15,7 +15,7 @@ export default function Show(props) {
 	useEffect(() => {
 		(async () => {
 			try {
-				const response = await fetch(`${endpoint}/${props.match.params.id}`);
+				const response = await fetch(`${endpoint}/whiskeys/${props.match.params.id}`);
 				const data = await response.json();
 				await updateWhiskey(data);
 			} catch (e) {
@@ -28,7 +28,7 @@ export default function Show(props) {
 		event.preventDefault();
 		try {
 			const submission = { ...whiskey };
-						const response = await fetch(`${endpoint}/${props.match.params.id}`, {
+						const response = await fetch(`${endpoint}/whiskeys/${props.match.params.id}`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'
