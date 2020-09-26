@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-let endpoint = process.env.MY_API;
+let endpoint = process.env.REACT_APP_MY_API_KEY;
 
 export default function Show(props) {
 	const [whiskey, updateWhiskey] = useState({});
@@ -35,7 +35,7 @@ export default function Show(props) {
 			<h3>
 				<Link to={'/'}>Go Back Home</Link>
 				<br />
-				<Link to={`/${props.match.params.id}/edit`}>Go To Edit Page</Link>
+				<Link to={`/whiskeys/${props.match.params.id}/edit`}>Go To Edit Page</Link>
 			</h3>
 		</div>
 	);
