@@ -13,10 +13,10 @@ function App() {
   const [state, setState] = useState({
     username:'',
     password:'',
-    isLoggedIn: false
+    // isLoggedIn: false
   })
 
-  const [isLoggedIn, seIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   
   const handleChange = (event) =>{
     const updateInput = Object.assign({}, formInputs, { [event.target.id]: event.target.value})
@@ -42,11 +42,17 @@ const handleSignUp = (event) =>{
 const handleRegister = async(event) =>{
   event.preventDefault();
   try{
-    const response = await axios.post('http://localhost:3000/users', {
-      username: state.username,
-      password: state.password
+    const response = await fetch('http://localhost:3000/users', {
+      body: JSON.stringify(state),
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+          withCredentials: true
+        }
   })
   console.log(response)
+  console.log(state)
 } catch (error){
   console.log(error)
 }
@@ -61,7 +67,7 @@ const handleRegister = async(event) =>{
         body: JSON.stringify(formInputs),
         method:'POST',
         headers: {
-          'Accept': 'application/json, text/plain, */*',
+          'Accept': 'application/json, text/plain, password/plain */*',
           'Content-Type': 'application/json'
         }
       })
@@ -146,6 +152,10 @@ const handleRegister = async(event) =>{
   useEffect(() => {
     (async function () {
         await getData();
+        if (localStorage.token){
+          setIsLoggedIn(true);
+        }else {
+          setIsLoggedIn(false)}
     })();
     }, []);
 
@@ -161,7 +171,9 @@ const handleRegister = async(event) =>{
            return( */}
              <SignUp
              isLoggedIn={isLoggedIn}
-             handleChange={handleSignUp}
+             username={state.username}
+             password={state.password}
+             handleSignUp={handleSignUp}
              handleRegister={handleRegister}
              />
            {/* )
