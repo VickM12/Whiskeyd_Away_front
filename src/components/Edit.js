@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Route, Link, BrowserRouter as Router } from "react-router-dom"
 import '../App.css'
 let endpoint =process.env.MY_API;
 

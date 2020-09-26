@@ -3,6 +3,7 @@ import Whiskeys from './components/Whiskeys.js';
 import './App.css';
 import { Route, Link, BrowserRouter as Router } from "react-router-dom"
 const endpoint = process.env.REACT_APP_API_KEY
+const PORT = process.env.PORT
 // import background from './components/imgs/barrel.jpg'
 
 
@@ -22,7 +23,7 @@ function App() {
   const handleSubmit = async (event) =>{
     event.preventDefault()
     try {
-      const response = await fetch('endpoint', {
+      const response = await fetch(endpoint, PORT, {
         body: JSON.stringify(formInputs),
         method:'POST',
         headers: {
@@ -47,7 +48,7 @@ function App() {
   
   const getData = async() =>{
     try {
-    const response = await fetch(endpoint)
+    const response = await fetch(endpoint, PORT)
     
     const whiskeyData = await response.json()
     setWhiskeys(whiskeyData)
