@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react';
 import SignUp from './components/SignUp.js'
 import Whiskeys from './components/Whiskeys.js';
 import './App.css';
-import { Route, Link, BrowserRouter as Router } from "react-router-dom"
+import { Route, Switch, Link, BrowserRouter as Router } from "react-router-dom"
+import axios from 'axios'
 const endpoint = process.env.REACT_APP_API_KEY
 const DEV_PORT = process.env.DEV_PORT
 // import background from './components/imgs/barrel.jpg'
@@ -14,8 +15,16 @@ function App() {
     password:'',
     isLoggedIn: false
   })
+
   const [isLoggedIn, seIsLoggedIn] = useState(false)
+  
+  const handleChange = (event) =>{
+    const updateInput = Object.assign({}, formInputs, { [event.target.id]: event.target.value})
+    updateFormInputs(updateInput)
+  }
+
   const [whiskeys, setWhiskeys] = useState([])
+
   const [formInputs, updateFormInputs] = useState({
     name: '',
     distiller: '',
@@ -33,14 +42,11 @@ const handleSignUp = (event) =>{
 const handleRegister = async(event) =>{
   event.preventDefault();
   try{
-    const response = await fetch(/*`${endpoint}/users`,*/ `http://localhost:3000/users`, {
-    body: JSON.stringify(formInputs),
-    method:'POST',
-    headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json'
-    }
+    const response = await axios.post('http://localhost:3000/users', {
+      username: state.username,
+      password: state.password
   })
+  console.log(response)
 } catch (error){
   console.log(error)
 }
@@ -48,10 +54,6 @@ const handleRegister = async(event) =>{
 //////////////////////////////////////////////
 /////////////Submit New Whiskey//////////////
 ////////////////////////////////////////////
-  const handleChange = (event) =>{
-    const updateInput = Object.assign({}, formInputs, { [event.target.id]: event.target.value})
-    updateFormInputs(updateInput)
-  }
   const handleSubmit = async (event) =>{
     event.preventDefault()
     try {
@@ -153,18 +155,18 @@ const handleRegister = async(event) =>{
      <nav>
        <h2>Sign Up Here</h2>
        <Router>
-         <Route 
+         {/* <Route 
          path='/users/signup'
          render={(props) => {
-           return(
+           return( */}
              <SignUp
              isLoggedIn={isLoggedIn}
-             handleChange={handleChange}
+             handleChange={handleSignUp}
              handleRegister={handleRegister}
              />
-           )
+           {/* )
          }}
-         />
+         /> */}
        <h2>Submit a whiskey!</h2>
        <form className="new" onSubmit={handleSubmit}>
          <label htmlFor="name">Name</label>
