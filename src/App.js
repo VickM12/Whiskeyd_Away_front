@@ -3,7 +3,7 @@ import Whiskeys from './components/Whiskeys.js';
 import './App.css';
 import { Route, Link, BrowserRouter as Router } from "react-router-dom"
 const endpoint = process.env.REACT_APP_API_KEY
-const PORT = process.env.PORT
+const PORT = process.env.DEV_PORT
 // import background from './components/imgs/barrel.jpg'
 
 
@@ -48,7 +48,7 @@ function App() {
   
   const getData = async() =>{
     try {
-    const response = await fetch(endpoint, PORT)
+    const response = await fetch(/*endpoint,*/ `http://localhost:3000/whiskeys`)
     
     const whiskeyData = await response.json()
     setWhiskeys(whiskeyData)

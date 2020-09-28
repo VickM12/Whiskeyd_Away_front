@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-let endpoint = process.env.MY_API;
+import App from '../App.js'
+let endpoint = process.env.REACT_APP_API_KEY;
 
 export default function Show(props) {
 	const [whiskey, updateWhiskey] = useState({});
@@ -8,9 +9,11 @@ export default function Show(props) {
 	useEffect(() => {
 		(async () => {
 			try {
-				const response = await fetch(`${endpoint}/${props.match.params.id}`);
+				const response = await fetch( `${endpoint}/whiskeys/${whiskey.match.params.id}`);
 				const data = await response.json();
+				console.log(response)
 				await updateWhiskey(data);
+				console.log(data)
 			} catch (e) {
 				console.error(e);
 			}
@@ -35,7 +38,7 @@ export default function Show(props) {
 			<h3>
 				<Link to={'/'}>Go Back Home</Link>
 				<br />
-				<Link to={`/${props.match.params.id}/edit`}>Go To Edit Page</Link>
+				<Link to={`/${whiskey.id}/edit`}>Go To Edit Page</Link>
 			</h3>
 		</div>
 	);
