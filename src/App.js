@@ -14,7 +14,7 @@ export default function App() {
     user:{
     username: '',
     password: '',
-    isLoggedIn: false
+    // isLoggedIn: false
     }
   })
 
@@ -46,14 +46,19 @@ export default function App() {
 const handleRegister = async(event) =>{
   event.preventDefault();
   try{
-    const response = await fetch('http://localhost:3000/users', {
-      body: JSON.stringify(state),
-      method: 'POST',
-      headers: {
-          'Accept': 'application/json, text/plain, */*',
-          'Content-Type': 'application/json',
-          withCredentials: true
+    const response = await axios.post('http://localhost:3000/users', {
+      // body: JSON.stringify({
+        user:{
+        username: state.username,
+        password: state.password
         }
+      //   }),
+      // method: 'POST',
+      // headers: {
+      //     'Accept': 'application/json, text/plain, */*',
+      //     'Content-Type': 'application/json',
+          // withCredentials: true
+        // }
   })
   console.log(response)
   console.log(state)
@@ -73,7 +78,7 @@ const handleLogIn = async (event) => {
   event.preventDefault();
   try {
     const response = await axios.post("http://localhost:3000/users/login", {
-      user: state.username,
+      username: state.username,
       password: state.password,
     });
     localStorage.token = response.data.token;
@@ -172,7 +177,7 @@ const handleLogOut = () => {
 
   return (
     <div className="App">
-      
+
      <nav>
        <h2>Sign Up Here</h2>
        <Router>
