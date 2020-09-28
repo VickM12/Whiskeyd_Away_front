@@ -1,33 +1,118 @@
 import React, {useState, useEffect} from 'react';
+import SignUp from './components/SignUp.js'
+import LogInForm from './components/LogInForm.js'
+import LogOut from './components/LogOut.js'
 import Whiskeys from './components/Whiskeys.js';
 import './App.css';
-import { Route, Link, BrowserRouter as Router } from "react-router-dom"
+import { Route, Switch, Link, BrowserRouter as Router } from "react-router-dom"
+import axios from 'axios'
 const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
 const PORT = process.env.DEV_PORT
 
+export default function App() {
+  const [state, setState] = useState({
+    user:{
+    username: '',
+    password: '',
+    // isLoggedIn: false
+    }
+  })
 
+  const handleUserForm = (event) =>{
+    const updateUserForm = Object.assign({}, state, { [event.target.id]: event.target.value})
+    setState(updateUserForm)
+  }
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  
+  const handleChange = (event) =>{
+    const updateInput = Object.assign({}, formInputs, { [event.target.id]: event.target.value})
+    updateFormInputs(updateInput)
+  }
 
-function App() {
-  // console.log(endpoint)
   const [whiskeys, setWhiskeys] = useState([])
+
   const [formInputs, updateFormInputs] = useState({
     name: '',
     distiller: '',
     origin:'',
     image:''
   })
-  const handleChange = (event) =>{
-    const updateInput = Object.assign({}, formInputs, { [event.target.id]: event.target.value})
-    updateFormInputs(updateInput)
+
+//==================================
+//        Register New User
+//==================================
+
+
+const handleRegister = async(event) =>{
+  event.preventDefault();
+  try{
+    const response = await axios.post('http://localhost:3000/users', {
+      // body: JSON.stringify({
+        user:{
+        username: state.username,
+        password: state.password
+        }
+      //   }),
+      // method: 'POST',
+      // headers: {
+      //     'Accept': 'application/json, text/plain, */*',
+      //     'Content-Type': 'application/json',
+          // withCredentials: true
+        // }
+  })
+  console.log(response)
+  console.log(state)
+  setState({
+    user:{
+        username: '',
+        password: ''
+  }})
+} catch (error){
+  console.log(error)
+}
+}
+//==================================
+//            Log In/Out
+//==================================
+const handleLogIn = async (event) => {
+  event.preventDefault();
+  try {
+    const response = await axios.post("http://localhost:3000/users/login", {
+      username: state.username,
+      password: state.password,
+    });
+    localStorage.token = response.data.token;
+    setIsLoggedIn(true);
+    console.log(response)
+    console.log(localStorage.token)
+  } catch (error) {
+    console.log(error);
   }
+};
+
+const handleLogOut = () => {
+  setState({
+    email: "",
+    password: "",
+    isLoggedIn: false,
+  });
+  localStorage.clear();
+};
+
+
+
+//==================================
+//        Submit New Whiskey
+//==================================
+
   const handleSubmit = async (event) =>{
     event.preventDefault()
     try {
-      const response = await fetch(endpoint ,/* PORT, */{
+      const response = await fetch(/*`${endpoint}/whiskeys`,*/ `${DEV_PORT}/whiskeys`, {
         body: JSON.stringify(formInputs),
         method:'POST',
         headers: {
-          'Accept': 'application/json, text/plain, */*',
+          'Accept': 'application/json, text/plain, password/plain */*',
           'Content-Type': 'application/json'
         }
       })
@@ -38,6 +123,8 @@ function App() {
         origin:'',
         image:''
       })
+
+      
       setWhiskeys([data, ...whiskeys])
       console.log(formInputs)
     }catch(error) {
@@ -46,18 +133,25 @@ function App() {
     
   }
 
-const getData = async() => {
-try {
-  const response = await fetch(endpoint, 
-  {
-    body: JSON.stringify(),
-    method:'GET',
-    headers: {
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/json'
-    }
-  })
 
+//==================================
+//        Get Whiskey Data
+//==================================
+  const getData = async() =>{
+    try {
+    const response = await fetch(/*`${endpoint}/whiskeys`, */`http://localhost:3000/whiskeys`)
+    
+    const whiskeyData = await response.json()
+    setWhiskeys(whiskeyData)
+       console.log(whiskeyData)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+//==================================
+//       Delete a Whiskey
+//==================================
   const whiskeyData = await response.json()
   await setWhiskeys(whiskeyData)
   console.log(whiskeyData)
@@ -65,9 +159,10 @@ try {
     console.log(error)
     } 
   }
+
   const handleDelete = async (event) => {
     try{
-      await fetch(`${endpoint}/${whiskeys.match.params.id}`, 
+      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
         {
         method:'DELETE',
         headers:{
@@ -78,17 +173,48 @@ try {
     console.log(error)
   }
   }
-  
+
   useEffect(() => {
     (async function () {
         await getData();
+        if (localStorage.token){
+          setIsLoggedIn(true);
+        }else {
+          setIsLoggedIn(false)}
     })();
     }, []);
 
   return (
     <div className="App">
-      {/* <img src={background} alt="barrel" /> */}
+
      <nav>
+       <h2>Sign Up Here</h2>
+       <Router>
+         {/* <Route 
+         path='/users/signup'
+         render={(props) => {
+           return( */}
+             <SignUp
+             isLoggedIn={isLoggedIn}
+             username={state.username}
+             password={state.password}
+             handleUserForm={handleUserForm}
+             handleRegister={handleRegister}
+             />
+           {/* )
+         }}
+         /> */}
+         <h2>Sign In Here</h2>
+          <LogInForm
+            isLoggedIN={isLoggedIn}
+            username={state.username}
+            password={state.password}
+            handleUserForm={handleUserForm}
+            handleLogIn={handleLogIn}
+            />
+            
+                <LogOut isLoggedIn={isLoggedIn} handleLogOut={handleLogOut} />
+             
        <h2>Submit a whiskey!</h2>
        <form className="new" onSubmit={handleSubmit}>
          <label htmlFor="name">Name</label>
@@ -105,12 +231,13 @@ try {
          onChange={handleChange}/>
          <input type="submit" className="submit"/>
        </form>
+       </Router>
      </nav>
       <main>
         <Whiskeys whiskeyData = {whiskeys} handleDelete= {handleDelete}  />
       </main>
+      
     </div>
   );
 }
 
-export default App;
