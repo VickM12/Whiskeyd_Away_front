@@ -108,7 +108,7 @@ const handleLogOut = () => {
   const handleSubmit = async (event) =>{
     event.preventDefault()
     try {
-      const response = await fetch(/*`${endpoint}/whiskeys`,*/ `${DEV_PORT}/whiskeys`, {
+      const response = await fetch(/*`${endpoint}/whiskeys`,*/ `${PORT}/whiskeys`, {
         body: JSON.stringify(formInputs),
         method:'POST',
         headers: {
@@ -152,13 +152,6 @@ const handleLogOut = () => {
 //==================================
 //       Delete a Whiskey
 //==================================
-  const whiskeyData = await response.json()
-  await setWhiskeys(whiskeyData)
-  console.log(whiskeyData)
-  } catch (error){
-    console.log(error)
-    } 
-  }
 
   const handleDelete = async (event) => {
     try{
