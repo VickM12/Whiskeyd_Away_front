@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Link, BrowserRouter as Router } from "react-router-dom"
 import '../App.css'
-let endpoint ="https://whiskey-api.herokuapp.com/";
+let endpoint ="https://whiskey-api.herokuapp.com/whiskeys";
 
 export default function Edit(props) {
 	const [whiskey, updateWhiskey] = useState({
@@ -13,7 +13,7 @@ export default function Edit(props) {
 	useEffect(() => {
 		(async () => {
 			try {
-				const response = await fetch(`${endpoint}/${props.match.params.whiskey.id}`);
+				const response = await fetch(`${endpoint}/${props.match.params.id}`);
 				const data = await response.json();
 				await updateWhiskey(data);
 			} catch (e) {

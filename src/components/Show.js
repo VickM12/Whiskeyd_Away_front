@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import App from '../App.js'
-const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys';
+let endpoint = 'https://whiskey-api.herokuapp.com/whiskeys';
 
 export default function Show(props) {
 	const [whiskey, updateWhiskey] = useState({});
