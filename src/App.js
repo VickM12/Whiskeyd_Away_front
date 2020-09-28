@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import SignUp from './components/SignUp.js'
+import LogInForm from './components/LogInForm.js'
 import Whiskeys from './components/Whiskeys.js';
 import './App.css';
 import { Route, Switch, Link, BrowserRouter as Router } from "react-router-dom"
@@ -10,17 +11,17 @@ const DEV_PORT = process.env.DEV_PORT
 
 
 function App() {
-  // const [state, setState] = useState({
-  //   user:{
-  //   username: '',
-  //   password: '',
-  //   }
-    // isLoggedIn: false
-  // })
-  // const handleSignUp = (event) =>{
-  //   const updateSignUp = Object.assign({}, state, { [event.target.id]: event.target.value})
-  //   setState(updateSignUp)
-  // }
+  const [state, setState] = useState({
+    user:{
+    username: '',
+    password: '',
+    isLoggedIn: false
+    }
+  })
+  const handleUserForm = (event) =>{
+    const updateUserForm = Object.assign({}, state, { [event.target.id]: event.target.value})
+    setState(updateUserForm)
+  }
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   
   const handleChange = (event) =>{
@@ -37,36 +38,56 @@ function App() {
     image:''
   })
 
-/////////////////////////////////////////////
-////////// Handle Signup/Registration///////
-////////////////////////////////////////////
+//==================================
+//        Register New User
+//==================================
 
 
-// const handleRegister = async(event) =>{
-//   event.preventDefault();
-//   try{
-//     const response = await fetch('http://localhost:3000/users', {
-//       body: JSON.stringify(state),
-//       method: 'POST',
-//       headers: {
-//           'Accept': 'application/json, text/plain, */*',
-//           'Content-Type': 'application/json',
-//           withCredentials: true
-//         }
-//   })
-//   console.log(response)
-//   console.log(state)
-//   setState({
-//     user:{
-//         username: '',
-//         password: ''
-//   }})
-// } catch (error){
-//   console.log(error)
-// }
-// }
+const handleRegister = async(event) =>{
+  event.preventDefault();
+  try{
+    const response = await fetch('http://localhost:3000/users', {
+      body: JSON.stringify(state),
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+          withCredentials: true
+        }
+  })
+  console.log(response)
+  console.log(state)
+  setState({
+    user:{
+        username: '',
+        password: ''
+  }})
+} catch (error){
+  console.log(error)
+}
+}
+//==================================
+//            Log In
+//==================================
+const handleLogIn = async (event) => {
+  event.preventDefault();
+  try {
+    const response = await axios.post("http://localhost:3000/users/login", {
+      user: state.username,
+      password: state.password,
+    });
+    localStorage.token = response.data.token;
+    setIsLoggedIn(true);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-/////////////Submit New Whiskey//////////////
+
+
+//==================================
+//        Submit New Whiskey
+//==================================
 
   const handleSubmit = async (event) =>{
     event.preventDefault()
@@ -97,9 +118,9 @@ function App() {
   }
 
 
-///////////////////////////////////////
-//////////Get Whiskey Data////////////
-/////////////////////////////////////
+//==================================
+//        Get Whiskey Data
+//==================================
   const getData = async() =>{
     try {
     const response = await fetch(/*`${endpoint}/whiskeys`, */`http://localhost:3000/whiskeys`)
@@ -111,9 +132,6 @@ function App() {
     console.error(error)
   }
 }
-////////////////////////////////////
-////////End Get Whiskey Data///////
-//////////////////////////////////
 
 // const getData = async() => {
 // try {
@@ -140,7 +158,7 @@ function App() {
   ///////////////////////////////////////////
   const handleDelete = async (event) => {
     try{
-      await fetch(`http://localhost/3000/whiskeys/${whiskeys.match.params.id}`, 
+      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
         {
         method:'DELETE',
         headers:{
@@ -176,15 +194,23 @@ function App() {
          render={(props) => {
            return( */}
              <SignUp
-            //  isLoggedIn={isLoggedIn}
-            //  username={state.username}
-            //  password={state.password}
-            //  handleSignUp={handleSignUp}
-            //  handleRegister={handleRegister}
+             isLoggedIn={isLoggedIn}
+             username={state.username}
+             password={state.password}
+             handleUserForm={handleUserForm}
+             handleRegister={handleRegister}
              />
            {/* )
          }}
          /> */}
+         <h2>Sign In Here</h2>
+          <LogInForm
+            isLoggedIN={isLoggedIn}
+            username={state.username}
+            password={state.password}
+            handleUserForm={handleUserForm}
+            handleLogIn={handleLogIn}
+            />
        <h2>Submit a whiskey!</h2>
        <form className="new" onSubmit={handleSubmit}>
          <label htmlFor="name">Name</label>
