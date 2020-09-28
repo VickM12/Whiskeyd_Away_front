@@ -8,10 +8,8 @@ import { Route, Switch, Link, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
 const endpoint = process.env.REACT_APP_API_KEY
 const DEV_PORT = process.env.DEV_PORT
-// import background from './components/imgs/barrel.jpg'
 
-
-function App() {
+export default function App() {
   const [state, setState] = useState({
     user:{
     username: '',
@@ -145,29 +143,9 @@ const handleLogOut = () => {
   }
 }
 
-// const getData = async() => {
-// try {
-  // const response = await fetch('endpoint', 
-  // {
-  //   body: JSON.stringify(),
-  //   method:'GET',
-  //   headers: {
-  //     'Accept': 'application/json, text/plain, */*',
-  //     'Content-Type': 'application/json'
-  //   }
-  // })
-
-  // const whiskeyData = await response.json()
-  // await setWhiskeys(whiskeyData)
-  // console.log(whiskeyData)
-  // } catch (error){
-  //   console.log(error)
-  //   } 
-  // }
-
-  ////////////////////////////////////////////
-  ////////////// Delete a Whiskey ////////////
-  ///////////////////////////////////////////
+//==================================
+//       Delete a Whiskey
+//==================================
   const handleDelete = async (event) => {
     try{
       await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
@@ -194,7 +172,7 @@ const handleLogOut = () => {
 
   return (
     <div className="App">
-      {/* <img src={background} alt="barrel" /> */}
+      
      <nav>
        <h2>Sign Up Here</h2>
        <Router>
@@ -249,4 +227,3 @@ const handleLogOut = () => {
   );
 }
 
-export default App;
