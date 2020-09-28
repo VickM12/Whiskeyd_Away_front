@@ -42,6 +42,7 @@ export default function Edit(props) {
 			});
 			console.log(response)
 			console.log(whiskey)
+			console.log(submission)
 		} catch (e) {
 			console.error(e);
 			console.log(whiskey);
