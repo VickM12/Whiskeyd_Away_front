@@ -9,9 +9,12 @@ export default function Show(props) {
 	useEffect(() => {
 		(async () => {
 			try {
-				const response = await fetch(`${endpoint}/${props.match.params.whiskey.id}`);
+				const response = await fetch(`${endpoint}/${props.match.params.id}`);
 				const data = await response.json();
 				await updateWhiskey(data);
+				console.log(response)
+				console.log(whiskey)
+				console.log(data)
 			} catch (e) {
 				console.error(e);
 			}

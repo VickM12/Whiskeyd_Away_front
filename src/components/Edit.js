@@ -40,6 +40,8 @@ export default function Edit(props) {
 				origin: '',
 				image: ''
 			});
+			console.log(response)
+			console.log(whiskey)
 		} catch (e) {
 			console.error(e);
 			console.log(whiskey);
