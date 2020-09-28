@@ -47,27 +47,19 @@ const handleRegister = async(event) =>{
   event.preventDefault();
   try{
     const response = await axios.post('http://localhost:3000/users', {
-      // body: JSON.stringify({
         user:{
         username: state.username,
         password: state.password
         }
-      //   }),
-      // method: 'POST',
-      // headers: {
-      //     'Accept': 'application/json, text/plain, */*',
-      //     'Content-Type': 'application/json',
-          // withCredentials: true
-        // }
   })
   console.log(response)
   console.log(state)
-  setState({
+  .then(setState({
     user:{
         username: '',
         password: ''
   }})
-} catch (error){
+  )} catch (error){
   console.log(error)
 }
 }
