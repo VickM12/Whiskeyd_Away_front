@@ -6,8 +6,8 @@ import Whiskeys from './components/Whiskeys.js';
 import './App.css';
 import { Route, Switch, Link, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
-const endpoint = process.env.REACT_APP_API_KEY
-const DEV_PORT = process.env.DEV_PORT
+const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
+const PORT = process.env.DEV_PORT
 
 export default function App() {
   const [state, setState] = useState({
@@ -133,6 +133,7 @@ const handleLogOut = () => {
     
   }
 
+
 //==================================
 //        Get Whiskey Data
 //==================================
@@ -151,6 +152,14 @@ const handleLogOut = () => {
 //==================================
 //       Delete a Whiskey
 //==================================
+  const whiskeyData = await response.json()
+  await setWhiskeys(whiskeyData)
+  console.log(whiskeyData)
+  } catch (error){
+    console.log(error)
+    } 
+  }
+
   const handleDelete = async (event) => {
     try{
       await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
