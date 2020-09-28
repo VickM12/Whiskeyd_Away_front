@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import SignUp from './components/SignUp.js'
 import LogInForm from './components/LogInForm.js'
+import LogOut from './components/LogOut.js'
 import Whiskeys from './components/Whiskeys.js';
 import './App.css';
 import { Route, Switch, Link, BrowserRouter as Router } from "react-router-dom"
@@ -18,6 +19,7 @@ function App() {
     isLoggedIn: false
     }
   })
+
   const handleUserForm = (event) =>{
     const updateUserForm = Object.assign({}, state, { [event.target.id]: event.target.value})
     setState(updateUserForm)
@@ -67,7 +69,7 @@ const handleRegister = async(event) =>{
 }
 }
 //==================================
-//            Log In
+//            Log In/Out
 //==================================
 const handleLogIn = async (event) => {
   event.preventDefault();
@@ -78,9 +80,20 @@ const handleLogIn = async (event) => {
     });
     localStorage.token = response.data.token;
     setIsLoggedIn(true);
+    console.log(response)
+    console.log(localStorage.token)
   } catch (error) {
     console.log(error);
   }
+};
+
+const handleLogOut = () => {
+  setState({
+    email: "",
+    password: "",
+    isLoggedIn: false,
+  });
+  localStorage.clear();
 };
 
 
@@ -116,7 +129,6 @@ const handleLogIn = async (event) => {
     }
     
   }
-
 
 //==================================
 //        Get Whiskey Data
@@ -169,9 +181,6 @@ const handleLogIn = async (event) => {
     console.log(error)
   }
   }
-////////////////////////////////////////
-///////// End Delete Whiskey////////////
-////////////////////////////////////////
 
   useEffect(() => {
     (async function () {
@@ -211,6 +220,9 @@ const handleLogIn = async (event) => {
             handleUserForm={handleUserForm}
             handleLogIn={handleLogIn}
             />
+            
+                <LogOut isLoggedIn={isLoggedIn} handleLogOut={handleLogOut} />
+             
        <h2>Submit a whiskey!</h2>
        <form className="new" onSubmit={handleSubmit}>
          <label htmlFor="name">Name</label>
