@@ -9,7 +9,7 @@ export default function Show(props) {
 	useEffect(() => {
 		(async () => {
 			try {
-				const response = await fetch(`${endpoint}/${props.match.params.id}`);
+				const response = await fetch(`${endpoint}/${props.match.params.whiskey.id}`);
 				const data = await response.json();
 				await updateWhiskey(data);
 			} catch (e) {
@@ -36,7 +36,7 @@ export default function Show(props) {
 			<h3>
 				<Link to={'/'}>Go Back Home</Link>
 				<br />
-				<Link to={`/${props.match.params.id}/edit`}>Go To Edit Page</Link>
+				<Link to={`/${whiskey.id}/edit`}>Go To Edit Page</Link>
 			</h3>
 		</div>
 	);
