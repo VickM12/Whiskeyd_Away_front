@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react';
 import Whiskeys from './components/Whiskeys.js';
 import './App.css';
 import { Route, Link, BrowserRouter as Router } from "react-router-dom"
-const endpoint = process.env.REACT_APP_API_KEY
-const PORT = process.env.PORT
-// import background from './components/imgs/barrel.jpg'
+const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
+const PORT = process.env.DEV_PORT
+
 
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
   const handleSubmit = async (event) =>{
     event.preventDefault()
     try {
-      const response = await fetch(endpoint, PORT, {
+      const response = await fetch(endpoint ,/* PORT, */{
         body: JSON.stringify(formInputs),
         method:'POST',
         headers: {
@@ -45,38 +45,26 @@ function App() {
     }
     
   }
-  
-  const getData = async() =>{
-    try {
-    const response = await fetch(endpoint, PORT)
-    
-    const whiskeyData = await response.json()
-    setWhiskeys(whiskeyData)
-       console.log(whiskeyData)
-  } catch (error) {
-    console.error(error)
+
+const getData = async() => {
+try {
+  const response = await fetch(endpoint, 
+  {
+    body: JSON.stringify(),
+    method:'GET',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    }
+  })
+
+  const whiskeyData = await response.json()
+  await setWhiskeys(whiskeyData)
+  console.log(whiskeyData)
+  } catch (error){
+    console.log(error)
+    } 
   }
-}
-
-// const getData = async() => {
-// try {
-  // const response = await fetch('endpoint', 
-  // {
-  //   body: JSON.stringify(),
-  //   method:'GET',
-  //   headers: {
-  //     'Accept': 'application/json, text/plain, */*',
-  //     'Content-Type': 'application/json'
-  //   }
-  // })
-
-  // const whiskeyData = await response.json()
-  // await setWhiskeys(whiskeyData)
-  // console.log(whiskeyData)
-  // } catch (error){
-  //   console.log(error)
-  //   } 
-  // }
   const handleDelete = async (event) => {
     try{
       await fetch(`${endpoint}/${whiskeys.match.params.id}`, 

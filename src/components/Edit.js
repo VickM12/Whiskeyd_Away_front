@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Link, BrowserRouter as Router } from "react-router-dom"
 import '../App.css'
-let endpoint =process.env.MY_API;
+let endpoint ="https://whiskey-api.herokuapp.com/whiskeys";
 
-export default function Show(props) {
+export default function Edit(props) {
 	const [whiskey, updateWhiskey] = useState({
 		name: '',
 		distiller: '',
 		origin: '',
 		image:''
 	});
-
 	useEffect(() => {
 		(async () => {
 			try {
@@ -22,7 +21,6 @@ export default function Show(props) {
 			}
 		})();
 	}, []);
-
 	const handleSubmit = async event => {
 		event.preventDefault();
 		try {
@@ -42,12 +40,13 @@ export default function Show(props) {
 				origin: '',
 				image: ''
 			});
+			console.log(response)
+			console.log(whiskey)
 		} catch (e) {
 			console.error(e);
 			console.log(whiskey);
 		}
 	};
-
 	return (
 		<div className="Page-wrapper">
 			{Object.keys(whiskey).length > 0 ? (
@@ -62,7 +61,7 @@ export default function Show(props) {
 				<h1>Nothing found on {props.match.params.id}.</h1>
 			)}
 			<form onSubmit={handleSubmit} className="task-form">
-				<h1> Edit Form </h1>
+				<h1> Edit Whiskey Form </h1>
 				Name:{' '}
 				<input
 					type="text"
