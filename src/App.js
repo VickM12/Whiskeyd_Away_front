@@ -11,8 +11,10 @@ const DEV_PORT = process.env.DEV_PORT
 
 function App() {
   const [state, setState] = useState({
+    user:{
     username:'',
     password:'',
+    }
     // isLoggedIn: false
   })
 
@@ -36,7 +38,8 @@ function App() {
 ////////// Handle Signup/Registration///////
 ////////////////////////////////////////////
 const handleSignUp = (event) =>{
-  setState({...state, [event.target.name]: event.target.value})
+  const updateSignUp = Object.assign({}, state, {[event.target.name]: event.target.value})
+  setState(updateSignUp)
 }
 
 const handleRegister = async(event) =>{
@@ -57,9 +60,9 @@ const handleRegister = async(event) =>{
   console.log(error)
 }
 }
-//////////////////////////////////////////////
+
 /////////////Submit New Whiskey//////////////
-////////////////////////////////////////////
+
   const handleSubmit = async (event) =>{
     event.preventDefault()
     try {
@@ -87,9 +90,7 @@ const handleRegister = async(event) =>{
     }
     
   }
-/////////////////////////////////////////
-////////End New Whiskey//////////////////
-////////////////////////////////////////
+
 
 ///////////////////////////////////////
 //////////Get Whiskey Data////////////
