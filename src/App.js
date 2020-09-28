@@ -10,14 +10,17 @@ const DEV_PORT = process.env.DEV_PORT
 
 
 function App() {
-  const [state, setState] = useState({
-    user:{
-    username:'',
-    password:'',
-    }
+  // const [state, setState] = useState({
+  //   user:{
+  //   username: '',
+  //   password: '',
+  //   }
     // isLoggedIn: false
-  })
-
+  // })
+  // const handleSignUp = (event) =>{
+  //   const updateSignUp = Object.assign({}, state, { [event.target.id]: event.target.value})
+  //   setState(updateSignUp)
+  // }
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   
   const handleChange = (event) =>{
@@ -37,29 +40,31 @@ function App() {
 /////////////////////////////////////////////
 ////////// Handle Signup/Registration///////
 ////////////////////////////////////////////
-const handleSignUp = (event) =>{
-  const updateSignUp = Object.assign({}, state, {[event.target.name]: event.target.value})
-  setState(updateSignUp)
-}
 
-const handleRegister = async(event) =>{
-  event.preventDefault();
-  try{
-    const response = await fetch('http://localhost:3000/users', {
-      body: JSON.stringify(state),
-      method: 'POST',
-      headers: {
-          'Accept': 'application/json, text/plain, */*',
-          'Content-Type': 'application/json',
-          withCredentials: true
-        }
-  })
-  console.log(response)
-  console.log(state)
-} catch (error){
-  console.log(error)
-}
-}
+
+// const handleRegister = async(event) =>{
+//   event.preventDefault();
+//   try{
+//     const response = await fetch('http://localhost:3000/users', {
+//       body: JSON.stringify(state),
+//       method: 'POST',
+//       headers: {
+//           'Accept': 'application/json, text/plain, */*',
+//           'Content-Type': 'application/json',
+//           withCredentials: true
+//         }
+//   })
+//   console.log(response)
+//   console.log(state)
+//   setState({
+//     user:{
+//         username: '',
+//         password: ''
+//   }})
+// } catch (error){
+//   console.log(error)
+// }
+// }
 
 /////////////Submit New Whiskey//////////////
 
@@ -135,7 +140,7 @@ const handleRegister = async(event) =>{
   ///////////////////////////////////////////
   const handleDelete = async (event) => {
     try{
-      await fetch(`http://localhost/3000/whiskeys/${whiskeys.params.id}`, 
+      await fetch(`http://localhost/3000/whiskeys/${whiskeys.match.params.id}`, 
         {
         method:'DELETE',
         headers:{
@@ -171,11 +176,11 @@ const handleRegister = async(event) =>{
          render={(props) => {
            return( */}
              <SignUp
-             isLoggedIn={isLoggedIn}
-             username={state.username}
-             password={state.password}
-             handleSignUp={handleSignUp}
-             handleRegister={handleRegister}
+            //  isLoggedIn={isLoggedIn}
+            //  username={state.username}
+            //  password={state.password}
+            //  handleSignUp={handleSignUp}
+            //  handleRegister={handleRegister}
              />
            {/* )
          }}
