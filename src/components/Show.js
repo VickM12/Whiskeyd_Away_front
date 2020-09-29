@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 let endpoint = 'https://whiskey-api.herokuapp.com/whiskeys';
-
+let PORT= process.env.DEV_PORT
 export default function Show(props) {
 	const [whiskey, updateWhiskey] = useState({});
 
 	useEffect(() => {
 		(async () => {
 			try {
-				const response = await fetch(`${endpoint}/${props.match.params.id}`);
+				const response = await fetch(/*`${endpoint}/${props.match.params.id}`*/ `http://localhost:3000/whiskeys/${props.match.params.id}`);
 				const data = await response.json();
 				await updateWhiskey(data);
 				console.log(response)
