@@ -8,7 +8,7 @@ export default function Show(props) {
 	useEffect(() => {
 		(async () => {
 			try {
-				const response = await fetch(/*`${endpoint}/${props.match.params.id}`*/ PORT/props.match.params.id);
+				const response = await fetch(/*`${endpoint}/${props.match.params.id}`*/ `http://localhost:3000/whiskeys/${props.match.params.id}`);
 				const data = await response.json();
 				await updateWhiskey(data);
 				console.log(response)

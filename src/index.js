@@ -22,7 +22,7 @@ const routes = [
 		name: 'Edit'
 	},
 	{
-		path: 'whiskeys/:id',
+		path: '/:id',
 		component: Show,
 		name: 'Show'
 	},

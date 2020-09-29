@@ -25,7 +25,7 @@ export default function Edit(props) {
 		event.preventDefault();
 		try {
 			const submission = { ...whiskey };
-						const response = await fetch(`${endpoint}/${props.match.params.id}`, {
+						const response = await fetch(/*`${endpoint}/${props.match.params.id}`*/`http://localhost:3000/whiskeys/${props.match.params.id}`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'
