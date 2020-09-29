@@ -5,7 +5,7 @@ import LogInForm from './components/LogInForm.js'
 import LogOut from './components/LogOut.js'
 import Whiskeys from './components/Whiskeys.js';
 import './App.css';
-import { Route, Switch, Link, BrowserRouter as Router } from "react-router-dom"
+import { Route, Switch, BrowserRouter  } from "react-router-dom"
 import axios from 'axios'
 const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
 const PORT = process.env.DEV_PORT
@@ -20,7 +20,7 @@ export default function App() {
   })
 
   const handleUserForm = (event) =>{
-    const updateUserForm = Object.assign({}, state, { [event.target.id]: event.target.value})
+    const updateUserForm = Object.assign({}, {user:{...state.user,  [event.target.id]: event.target.value}})
     setState(updateUserForm)
   }
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -70,7 +70,7 @@ const handleRegister = async(event) =>{
 const handleLogIn = async (event) => {
   event.preventDefault();
   try {
-    const response = await axios.post("http://localhost:3000/users/login", {
+    const response = await axios.post("http://localhost:3000/users/login",{
       user:{
       username: state.username,
       password: state.password,
@@ -192,7 +192,7 @@ const handleLogOut = () => {
              />
            )
          }}
-         /> 
+         />  
           <Route
           path='/users/login'
           render={(props) =>{

@@ -8,11 +8,11 @@ export default function LogInForm(props) {
       <form>
         <div>
           <label htmlFor="username">Username</label>
-          <input type="text" name="username" onChange={props.handleUserForm} />
+          <input type="text" id="username" onChange={props.handleUserForm} />
         </div>
         <div>
           <label htmlFor="password">Password</label>
-          <input type="text" name="password" onChange={props.handleUserForm} />
+          <input type="text" id="password" onChange={props.handleUserForm} />
         </div>
         <input value="Submit" type="submit" onClick={props.handleLogIn} />
       </form>
