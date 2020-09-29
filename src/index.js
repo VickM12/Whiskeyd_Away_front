@@ -38,16 +38,16 @@ const routes = [
 	},
 	{
 		path: '/',
-		component: App, Whiskeys,
+		component: App, 
 		name: 'Home'
 	}
 ];
 
 // ReactDOM.render(
 //   <React.StrictMode>
-//     <Router>
+//     {/* <Router> */}
 //       <App />
-//     </Router>
+//     {/* </Router> */}
 //   </React.StrictMode>,
 //   document.getElementById("root")
 // );

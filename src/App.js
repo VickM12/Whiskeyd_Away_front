@@ -5,7 +5,7 @@ import LogInForm from './components/LogInForm.js'
 import LogOut from './components/LogOut.js'
 import Whiskeys from './components/Whiskeys.js';
 import './App.css';
-import { Route, Switch, BrowserRouter  } from "react-router-dom"
+import { Route, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
 const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
 const PORT = process.env.DEV_PORT
@@ -175,14 +175,14 @@ const handleLogOut = () => {
 
   return (
     <div className="App">
-
+<Router>
      <NavBar is LoggedIn={isLoggedIn} />
        <div className='body'>
-       <Switch>
-          <Route 
+       {/* <Switch> */}
+          {/* <Route 
          path='/users/signup'
          render={(props) => {
-           return(
+           return( */}
              <SignUp
               isLoggedIn={isLoggedIn}
               username={state.username}
@@ -190,13 +190,13 @@ const handleLogOut = () => {
               handleUserForm={handleUserForm}
               handleRegister={handleRegister}
              />
-           )
+           {/* )
          }}
-         />  
-          <Route
+         />   */}
+          {/* <Route
           path='/users/login'
           render={(props) =>{
-            return(
+            return( */}
               <LogInForm
                 isLoggedIn={isLoggedIn}
                 username={state.username}
@@ -204,17 +204,17 @@ const handleLogOut = () => {
                 handleUserForm={handleUserForm}
                 handleLogIn={handleLogIn} 
                 />
-            );
+            {/* );
           }}
-          />
-          <Route
+          /> */}
+          {/* <Route
           path='/logout'
           render={(props) =>{
-            return(
+            return( */}
               <LogOut isLoggedIn={isLoggedIn} handleLogOut={handleLogOut} />
-            )
+            {/* )
           }}
-          />
+          /> */}
              
        <h2>Submit a whiskey!</h2>
        <form className="new" onSubmit={handleSubmit}>
@@ -232,8 +232,9 @@ const handleLogOut = () => {
          onChange={handleChange}/>
          <input type="submit" className="submit"/>
        </form>
-       
-    </Switch>
+        
+      </div></Router>
+    {/* </Switch> */}
       <main>
        { /*</main><Route
         path='/'
@@ -243,8 +244,8 @@ const handleLogOut = () => {
          {/* }}
          /> */}
       </main>
+     
       
-      </div>
     </div>
   );
 }
