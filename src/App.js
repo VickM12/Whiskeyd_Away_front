@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import NavBar from './components/NavBar.js'
 import SignUp from './components/SignUp.js'
 import LogInForm from './components/LogInForm.js'
 import LogOut from './components/LogOut.js'
@@ -14,7 +15,7 @@ export default function App() {
     user:{
     username: '',
     password: '',
-    // isLoggedIn: false
+    isLoggedIn: false
     }
   })
 
@@ -167,61 +168,80 @@ const handleLogOut = () => {
         }else {
           setIsLoggedIn(false)}
     })();
-    }, []);
+    }, [isLoggedIn]);
 
   return (
     <div className="App">
 
-     <nav>
-       <h2>Sign Up Here</h2>
-       <Router>
-         {/* <Route 
+     <NavBar is LoggedIn={isLoggedIn} />
+       <div className='body'>
+       <Switch>
+          <Route 
          path='/users/signup'
          render={(props) => {
-           return( */}
+           return(
              <SignUp
-             isLoggedIn={isLoggedIn}
-             username={state.username}
-             password={state.password}
-             handleUserForm={handleUserForm}
-             handleRegister={handleRegister}
+              isLoggedIn={isLoggedIn}
+              username={state.username}
+              password={state.password}
+              handleUserForm={handleUserForm}
+              handleRegister={handleRegister}
              />
-           {/* )
+           )
          }}
-         /> */}
-         <h2>Sign In Here</h2>
-          <LogInForm
-            isLoggedIN={isLoggedIn}
-            username={state.username}
-            password={state.password}
-            handleUserForm={handleUserForm}
-            handleLogIn={handleLogIn}
-            />
-            
-                <LogOut isLoggedIn={isLoggedIn} handleLogOut={handleLogOut} />
+         /> 
+          <Route
+          path='/users/login'
+          render={(props) =>{
+            return(
+              <LogInForm
+                isLoggedIN={isLoggedIn}
+                username={state.username}
+                password={state.password}
+                handleUserForm={handleUserForm}
+                handleLogIn={handleLogIn} 
+                />
+            );
+          }}
+          />
+          <Route
+          path='/logout'
+          render={(props) =>{
+            return(
+              <LogOut isLoggedIn={isLoggedIn} handleLogOut={handleLogOut} />
+            )
+          }}
+          />
              
        <h2>Submit a whiskey!</h2>
        <form className="new" onSubmit={handleSubmit}>
          <label htmlFor="name">Name</label>
          <input type='text' id='name' value={formInputs.name}
-         onChange={handleChange}/>
+         onChange={handleChange}/><br/>
          <label htmlFor='distiller'>Distillery</label>
          <input type='text' id='distiller' value={formInputs.distiller}
-         onChange={handleChange} />
+         onChange={handleChange} /><br/>
          <label htmlFor="origin">Origin</label>
          <input type='text' id='origin' value={formInputs.origin}
-         onChange={handleChange}/>
+         onChange={handleChange}/><br/>
          <label htmlFor='img'>Image</label>
          <input type='text' id='image' value={formInputs.image}
          onChange={handleChange}/>
          <input type="submit" className="submit"/>
        </form>
-       </Router>
-     </nav>
+       
+    
       <main>
-        <Whiskeys whiskeyData = {whiskeys} handleDelete= {handleDelete}  />
+        <Route
+        path='/'
+        render={(props) => {
+          return <Whiskeys isLoggedIn={isLoggedIn}/*whiskeyData = {whiskeys} */handleDelete= {handleDelete}  />
+        
+        }}
+        />
       </main>
-      
+      </Switch>
+      </div>
     </div>
   );
 }

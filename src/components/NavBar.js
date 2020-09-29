@@ -1,5 +1,5 @@
 import React from 'react';
-export default function NavBar (props) {
+export default function NavBar(props) {
 
   let navBarItems = [
     <li key={1}>
@@ -9,19 +9,19 @@ export default function NavBar (props) {
   if (props.isLoggedIn) {
     navBarItems.push(
       <li key={2}>
-        <a href="/logout">Log Out</a>
+        <a href="/users/logout">Log Out</a>
       </li>
     );
   } else {
     navBarItems.push(
       <li key={3}>
-        <a href="/users">Sign Up</a>
+        <a href="/users/signup">Sign Up</a>
       </li>
     );
     if (props.isLoggedIn) {
       navBarItems.push(
     <li key={4}>
-        Logged in as {props.email}
+        Logged in as {props.username}
       </li>
       )
     }

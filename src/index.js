@@ -32,27 +32,34 @@ const routes = [
 	}
 ];
 
-
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-		<Switch>
-			{routes.map(route => {
-				return (
-					<Route
-						component={route.component}
-						key={route.name}
-						path={route.path}
-					/>
-				);
-			})}
-       <App />
-		</Switch>
-	</Router>,
-   
+      <App />
+    </Router>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <Router>
+// 		<Switch>
+// 			{routes.map(route => {
+// 				return (
+// 					<Route
+// 						component={route.component}
+// 						key={route.name}
+// 						path={route.path}
+// 					/>
+// 				);
+// 			})}
+//        <App />
+// 		</Switch>
+// 	</Router>,
+   
+//   </React.StrictMode>,
+//   document.getElementById('root')
+// );
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
