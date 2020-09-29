@@ -181,6 +181,8 @@ const handleLogOut = () => {
     <div className="App">
 <Router>
      <nav>
+       <div>
+         { isLoggedIn ? '' :
          <SignUp
             isLoggedIn={isLoggedIn}
             username={state.username}
@@ -188,6 +190,8 @@ const handleLogOut = () => {
             handleUserForm={handleUserForm}
             handleRegister={handleRegister}
            />
+          }
+        </div>
           <div>
             { isLoggedIn ? '' :
              <LogInForm
@@ -205,11 +209,10 @@ const handleLogOut = () => {
         </div>
         <div className="newWhiskey">
           { isLoggedIn ?     
-            <NewWhiskey isLoggedIN={isLoggedIn}
+            <NewWhiskey 
               handleSubmit={handleSubmit}
               handleChange={handleChange}
-              formInputs={formInputs} />
-           : ''
+              formInputs={formInputs} /> : ''
            }
         </div>
       </nav>
