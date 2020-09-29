@@ -71,12 +71,15 @@ const handleLogIn = async (event) => {
   event.preventDefault();
   try {
     const response = await axios.post("http://localhost:3000/users/login", {
+      user:{
       username: state.username,
       password: state.password,
+      }
     });
     localStorage.token = response.data.token;
     setIsLoggedIn(true);
-    console.log(response)
+    console.log('response is ', response)
+    console.log('state is ', state)
     console.log(localStorage.token)
   } catch (error) {
     console.log(error);
@@ -85,7 +88,7 @@ const handleLogIn = async (event) => {
 
 const handleLogOut = () => {
   setState({
-    email: "",
+    username: "",
     password: "",
     isLoggedIn: false,
   });
@@ -148,7 +151,7 @@ const handleLogOut = () => {
 
   const handleDelete = async (event) => {
     try{
-      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
+      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}/destroy`, 
         {
         method:'DELETE',
         headers:{
@@ -195,7 +198,7 @@ const handleLogOut = () => {
           render={(props) =>{
             return(
               <LogInForm
-                isLoggedIN={isLoggedIn}
+                isLoggedIn={isLoggedIn}
                 username={state.username}
                 password={state.password}
                 handleUserForm={handleUserForm}
@@ -230,17 +233,17 @@ const handleLogOut = () => {
          <input type="submit" className="submit"/>
        </form>
        
-    
+    </Switch>
       <main>
-        <Route
+       { /*</main><Route
         path='/'
         render={(props) => {
-          return <Whiskeys isLoggedIn={isLoggedIn}/*whiskeyData = {whiskeys} */handleDelete= {handleDelete}  />
+          return */ }<Whiskeys /*isLoggedIn={isLoggedIn}*/whiskeyData = {whiskeys} handleDelete= {handleDelete}  />
         
-        }}
-        />
+         {/* }}
+         /> */}
       </main>
-      </Switch>
+      
       </div>
     </div>
   );
