@@ -33,7 +33,7 @@ export default function App() {
   }
 
   const [whiskeys, setWhiskeys] = useState([])
-
+  const fileState = {selectedFile: null}
   const [formInputs, updateFormInputs] = useState({
     name: '',
     distiller: '',
@@ -108,31 +108,47 @@ const handleLogOut = () => {
   const handleSubmit = async (event) =>{
     event.preventDefault()
     try {
-      const response = await fetch(/*`${endpoint}/whiskeys`,*/ `${PORT}/whiskeys`, {
-        body: JSON.stringify(formInputs),
+      const response = await fetch(/*`${endpoint}/whiskeys`,*/ `http://localhost:3000/whiskeys`, {
+        body: JSON.stringify(formInputs, fileState.selectedFile),
         method:'POST',
         headers: {
-          'Accept': 'application/json, text/plain, password/plain */*',
+          'Accept': 'application/json, text/plain, password/plain, image/jpeg, image/png,  */*',
           'Content-Type': 'application/json'
         }
       })
       const data = await response.json()
+     
       updateFormInputs({
         name: '',
         distiller: '',
         origin:'',
         image:''
       })
-
-      
       setWhiskeys([data, ...whiskeys])
       console.log(formInputs)
-    }catch(error) {
+    } catch(error) {
       console.log(error)
     }
+    const uploadHandler=()=>{
+      console.log(this.fileState.selectedFile
+      )
+    }
+    updateFormInputs({
+      name: '',
+      distiller: '',
+      origin:'',
+      image:''
+    })
+
     
   }
+//==================================
+//        Upload Whiskey Image
+//==================================
 
+const fileChangedHandler = (event)=>{
+  this.setState({ selectedFile: event.target.files[0] })
+}
 
 //==================================
 //        Get Whiskey Data
@@ -229,4 +245,3 @@ const handleLogOut = () => {
     </div>
   );
 }
-

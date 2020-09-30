@@ -14,8 +14,8 @@ export default function NewWhiskey(props){
          <input type='text' id='origin' value={props.formInputs.origin}
          onChange={props.handleChange}/><br/>
          <label htmlFor='img'>Image</label>
-         <input type='text' id='image' value={props.formInputs.image}
-         onChange={props.handleChange}/>
+         <input type='file' id='image' /*value={props.formInputs.image} */
+         onChange={props.fileChangedHandler}/>
          <input type="submit" className="submit"/>
        </form>
     </div>
