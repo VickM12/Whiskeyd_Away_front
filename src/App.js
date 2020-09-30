@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
+// import NavBar from './components/NavBar.js'
 import SignUp from './components/SignUp.js'
 import LogInForm from './components/LogInForm.js'
 import LogOut from './components/LogOut.js'
 import Whiskeys from './components/Whiskeys.js';
+import NewWhiskey from './components/NewWhiskey.js';
 import './App.css';
-import { Route, Switch, Link, BrowserRouter as Router } from "react-router-dom"
+import { Route, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
 const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
 const PORT = process.env.DEV_PORT
@@ -14,13 +16,14 @@ export default function App() {
     user:{
     username: '',
     password: '',
-    // isLoggedIn: false
+    isLoggedIn: false
     }
   })
 
   const handleUserForm = (event) =>{
-    const updateUserForm = Object.assign({}, state, { [event.target.id]: event.target.value})
-    setState(updateUserForm)
+    // const updateUserForm = Object.assign({}, {user:{...state.user,  [event.target.id]: event.target.value}})
+    // setState(updateUserForm)
+    setState({...state, [event.target.id]: event.target.value})
   }
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   
@@ -52,6 +55,8 @@ const handleRegister = async(event) =>{
         password: state.password
         }
   })
+  localStorage.token = response.data.token
+  setIsLoggedIn(true)
   console.log(response)
   console.log(state)
   .then(setState({
@@ -69,13 +74,16 @@ const handleRegister = async(event) =>{
 const handleLogIn = async (event) => {
   event.preventDefault();
   try {
-    const response = await axios.post("http://localhost:3000/users/login", {
+    const response = await axios.post("http://localhost:3000/users/login",{
+      user:{
       username: state.username,
       password: state.password,
+      }
     });
     localStorage.token = response.data.token;
     setIsLoggedIn(true);
-    console.log(response)
+    console.log('response is ', response)
+    console.log('state is ', state)
     console.log(localStorage.token)
   } catch (error) {
     console.log(error);
@@ -84,7 +92,7 @@ const handleLogIn = async (event) => {
 
 const handleLogOut = () => {
   setState({
-    email: "",
+    username: "",
     password: "",
     isLoggedIn: false,
   });
@@ -147,7 +155,7 @@ const handleLogOut = () => {
 
   const handleDelete = async (event) => {
     try{
-      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
+      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}/destroy`, 
         {
         method:'DELETE',
         headers:{
@@ -167,60 +175,56 @@ const handleLogOut = () => {
         }else {
           setIsLoggedIn(false)}
     })();
-    }, []);
+    }, [isLoggedIn]);
 
   return (
     <div className="App">
-
+<Router>
      <nav>
-       <h2>Sign Up Here</h2>
-       <Router>
-         {/* <Route 
-         path='/users/signup'
-         render={(props) => {
-           return( */}
-             <SignUp
-             isLoggedIn={isLoggedIn}
-             username={state.username}
-             password={state.password}
-             handleUserForm={handleUserForm}
-             handleRegister={handleRegister}
-             />
-           {/* )
-         }}
-         /> */}
-         <h2>Sign In Here</h2>
-          <LogInForm
-            isLoggedIN={isLoggedIn}
+       <div>
+         { isLoggedIn ? '' :
+         <SignUp
+            isLoggedIn={isLoggedIn}
             username={state.username}
             password={state.password}
             handleUserForm={handleUserForm}
-            handleLogIn={handleLogIn}
-            />
-            
-                <LogOut isLoggedIn={isLoggedIn} handleLogOut={handleLogOut} />
-             
-       <h2>Submit a whiskey!</h2>
-       <form className="new" onSubmit={handleSubmit}>
-         <label htmlFor="name">Name</label>
-         <input type='text' id='name' value={formInputs.name}
-         onChange={handleChange}/>
-         <label htmlFor='distiller'>Distillery</label>
-         <input type='text' id='distiller' value={formInputs.distiller}
-         onChange={handleChange} />
-         <label htmlFor="origin">Origin</label>
-         <input type='text' id='origin' value={formInputs.origin}
-         onChange={handleChange}/>
-         <label htmlFor='img'>Image</label>
-         <input type='text' id='image' value={formInputs.image}
-         onChange={handleChange}/>
-         <input type="submit" className="submit"/>
-       </form>
-       </Router>
-     </nav>
+            handleRegister={handleRegister}
+           />
+          }
+        </div>
+          <div>
+            { isLoggedIn ? '' :
+             <LogInForm
+            isLoggedIn={isLoggedIn}
+            username={state.username}
+            password={state.password}
+            handleUserForm={handleUserForm}
+            handleLogIn={handleLogIn} 
+           /> }
+         </div>
+        <div>
+          {isLoggedIn ? 
+          <LogOut isLoggedIn={isLoggedIn} handleLogOut =
+          {handleLogOut} /> : ''}
+        </div>
+        <div className="newWhiskey">
+          { isLoggedIn ?     
+            <NewWhiskey 
+              handleSubmit={handleSubmit}
+              handleChange={handleChange}
+              formInputs={formInputs} /> : ''
+           }
+        </div>
+      </nav>
+      </Router>
+    {/* </Switch> */}
       <main>
-        <Whiskeys whiskeyData = {whiskeys} handleDelete= {handleDelete}  />
+       { /*</main><Route
+        path='/'
+        render={(props) => {
+          return */ }<Whiskeys /*isLoggedIn={isLoggedIn}*/whiskeyData = {whiskeys} handleDelete= {handleDelete}  />
       </main>
+     
       
     </div>
   );
