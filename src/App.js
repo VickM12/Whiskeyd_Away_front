@@ -1,4 +1,3 @@
-
 import React, {useState, useEffect} from 'react';
 // import NavBar from './components/NavBar.js'
 import SignUp from './components/SignUp.js'
@@ -112,10 +111,10 @@ const handleLogOut = () => {
     event.preventDefault()
     // const uploadHandler= async(event) =>{
       try {
-        axios.post(`${imageEndPoint}${key}`, fileState.selectedFile)
+       const res = await axios.post(`${imageEndPoint}`, key, 
+       { fileState}) 
       console.log(fileState.selectedFile)
-    .then(res => {
-        console.log(res)})
+    .then(console.log(res))
       }catch(error){
       console.log(error)
     }
