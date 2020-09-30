@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import AddToFav from './components/AddToFav';
 import { Link } from 'react-router-dom';
 let endpoint = 'https://whiskey-api.herokuapp.com/whiskeys';
 let PORT= 'http://localhost:3000/whiskeys'
 
 export default function Show(props) {
-	const [whiskey, updateWhiskey] = useState({});
+	const [whiskey, showWhiskey] = useState({});
 
 	useEffect(() => {
 		(async () => {
 			try {
 				const response = await fetch(/*`${endpoint}/${props.match.params.id}`*/ `http://localhost:3000/whiskeys/${props.match.params.id}`);
 				const data = await response.json();
-				await updateWhiskey(data);
+				await showWhiskey(data);
 				console.log(response)
 				console.log(whiskey)
 				console.log(data)
@@ -37,6 +38,7 @@ export default function Show(props) {
 				<h1>Nothing found on {props.match.params.id}.</h1>
 			)}
 			<h3>
+				<AddToFav /><br/>
 				<Link to={'/'}>Go Back Home</Link>
 				<br />
 				<Link to={`/${whiskey.id}/edit`}>Go To Edit Page</Link>
