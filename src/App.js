@@ -84,8 +84,13 @@ const handleLogIn = async (event) => {
     });
     localStorage.token = response.data.token;
     setIsLoggedIn(true);
+    if (response.data.message === undefined){
+      setIsLoggedIn(false)
+    }
+    setState(response)
     console.log('response is ', response)
     console.log('state is ', state)
+    console.log(`received token is ${response.data.token}`)
     console.log(localStorage.token)
   } catch (error) {
     console.log(error);
@@ -169,15 +174,40 @@ const handleLogOut = () => {
   }
   }
 
+//========================
+//    Add to Favorites
+//========================
+const handleFavorites= async (event)=>{
+  try{
+    const response = await axios.post('http://localhost:3000/ledgers', {
+      ledger: {
+        user_id: state.id,
+      whiskey_id: whiskeys.id
+      }
+    }
+    )
+console.log(response)
+} catch (error){
+console.log(error)
+  }
+}
+
+//=======================
+//    Use Effect
+//=======================
   useEffect(() => {
     (async function () {
         await getData();
         if (localStorage.token){
           setIsLoggedIn(true);
+          if (localStorage.token === undefined){
+            setIsLoggedIn(false)
+          }
         }else {
           setIsLoggedIn(false)}
     })();
-    }, [isLoggedIn]);
+    }, [/*isLoggedIn*/]);
+
 
   return (
     <div className="App">
@@ -224,7 +254,10 @@ const handleLogOut = () => {
        { /*</main><Route
         path='/'
         render={(props) => {
-          return */ }<Whiskeys /*isLoggedIn={isLoggedIn}*/whiskeyData = {whiskeys} handleDelete= {handleDelete}  />
+          return */ }<Whiskeys /*isLoggedIn={isLoggedIn}*/whiskeyData = {whiskeys} 
+          handleDelete= {handleDelete}
+          handleFavorites= {handleFavorites} 
+          state = {state} />
       </main>
      
       

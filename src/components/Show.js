@@ -6,7 +6,8 @@ let PORT= 'http://localhost:3000/whiskeys'
 
 export default function Show(props) {
 	const [whiskey, showWhiskey] = useState({});
-
+	const [state, setState] = useState({})
+	const handleFavorites = props.handleFavorites
 
 	useEffect(() => {
 		(async () => {
@@ -43,7 +44,9 @@ export default function Show(props) {
 				<div>
 					{/* { props.isLoggedIn ?  */}
 				<AddToFav 
-				whiskey = {whiskey}/> 
+				whiskey = {whiskey}
+				state = {props.state}
+				handleFavorites = {handleFavorites}/> 
 				</div>
 				<Link to={'/'}>Go Back Home</Link>
 				<br />
