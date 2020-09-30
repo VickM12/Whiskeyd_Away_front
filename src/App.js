@@ -14,6 +14,7 @@ const PORT = process.env.DEV_PORT
 export default function App() {
   const [state, setState] = useState({
     user:{
+    id: '',
     username: '',
     password: '',
     isLoggedIn: false
@@ -76,6 +77,7 @@ const handleLogIn = async (event) => {
   try {
     const response = await axios.post("http://localhost:3000/users/login",{
       user:{
+      id: state.id,
       username: state.username,
       password: state.password,
       }

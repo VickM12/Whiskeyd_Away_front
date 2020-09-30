@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import AddToFav from './components/AddToFav';
+import AddToFav from '../components/AddToFav.js';
 import { Link } from 'react-router-dom';
 let endpoint = 'https://whiskey-api.herokuapp.com/whiskeys';
 let PORT= 'http://localhost:3000/whiskeys'
 
 export default function Show(props) {
 	const [whiskey, showWhiskey] = useState({});
+
 
 	useEffect(() => {
 		(async () => {
@@ -37,12 +38,18 @@ export default function Show(props) {
 			) : (
 				<h1>Nothing found on {props.match.params.id}.</h1>
 			)}
+			<div>
 			<h3>
-				<AddToFav /><br/>
+				<div>
+					{/* { props.isLoggedIn ?  */}
+				<AddToFav 
+				whiskey = {whiskey}/> 
+				</div>
 				<Link to={'/'}>Go Back Home</Link>
 				<br />
 				<Link to={`/${whiskey.id}/edit`}>Go To Edit Page</Link>
 			</h3>
+			</div>
 		</div>
 	);
 }
