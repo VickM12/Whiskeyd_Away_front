@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 let endpoint = 'https://whiskey-api.herokuapp.com/whiskeys';
 let PORT= 'http://localhost:3000/whiskeys'
+
 export default function Show(props) {
 	const [whiskey, updateWhiskey] = useState({});
 
