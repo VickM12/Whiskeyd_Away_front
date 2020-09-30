@@ -1,3 +1,4 @@
+
 import React, {useState, useEffect} from 'react';
 // import NavBar from './components/NavBar.js'
 import SignUp from './components/SignUp.js'
@@ -10,6 +11,8 @@ import { Route, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
 const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
 const PORT = process.env.DEV_PORT
+const imageEndPoint = process.env.AWS_API_ENDPOINT
+const key = process.env.REACT_APP_AWS_API_KEY
 
 export default function App() {
   const [state, setState] = useState({
@@ -107,8 +110,17 @@ const handleLogOut = () => {
 
   const handleSubmit = async (event) =>{
     event.preventDefault()
+    // const uploadHandler= async(event) =>{
+      try {
+        axios.post(`${imageEndPoint}${key}`, fileState.selectedFile)
+      console.log(fileState.selectedFile)
+    .then(res => {
+        console.log(res)})
+      }catch(error){
+      console.log(error)
+    }
     try {
-      const response = await fetch(/*`${endpoint}/whiskeys`,*/ `http://localhost:3000/whiskeys`, {
+      const response = await  fetch(/*`${endpoint}/whiskeys`,*/ `http://localhost:3000/whiskeys`, {
         body: JSON.stringify(formInputs, fileState.selectedFile),
         method:'POST',
         headers: {
@@ -116,7 +128,7 @@ const handleLogOut = () => {
           'Content-Type': 'application/json'
         }
       })
-      const data = await response.json()
+      const data =/* await*/ response.json()
      
       updateFormInputs({
         name: '',
@@ -129,25 +141,20 @@ const handleLogOut = () => {
     } catch(error) {
       console.log(error)
     }
-    const uploadHandler=()=>{
-      console.log(this.fileState.selectedFile
-      )
-    }
+    
     updateFormInputs({
       name: '',
       distiller: '',
       origin:'',
       image:''
     })
-
-    
   }
 //==================================
 //        Upload Whiskey Image
 //==================================
 
 const fileChangedHandler = (event)=>{
-  this.setState({ selectedFile: event.target.files[0] })
+  setState({ selectedFile: event.target.files[0] })
 }
 
 //==================================
@@ -226,6 +233,7 @@ const fileChangedHandler = (event)=>{
         <div className="newWhiskey">
           { isLoggedIn ?     
             <NewWhiskey 
+              fileChangedHandler= {fileChangedHandler}
               handleSubmit={handleSubmit}
               handleChange={handleChange}
               formInputs={formInputs} /> : ''
