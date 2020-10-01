@@ -5,8 +5,9 @@ import LogInForm from './components/LogInForm.js'
 import LogOut from './components/LogOut.js'
 import Whiskeys from './components/Whiskeys.js';
 import NewWhiskey from './components/NewWhiskey.js';
+// import MyFavs from './components/MyFavs.js'
 import './App.css';
-import { Route, Switch, BrowserRouter as Router } from "react-router-dom"
+import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
 const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
 const PORT = process.env.DEV_PORT
@@ -14,6 +15,7 @@ const PORT = process.env.DEV_PORT
 export default function App() {
   const [state, setState] = useState({
     user:{
+    id: '',
     username: '',
     password: '',
     isLoggedIn: false
@@ -76,14 +78,19 @@ const handleLogIn = async (event) => {
   try {
     const response = await axios.post("http://localhost:3000/users/login",{
       user:{
+      id: state.id,
       username: state.username,
       password: state.password,
       }
     });
     localStorage.token = response.data.token;
+    localStorage.id = response.data.user.id;
+    localStorage.username = response.data.user.username;
     setIsLoggedIn(true);
+    setState(state)
     console.log('response is ', response)
     console.log('state is ', state)
+    console.log(`received token is ${response.data.token}`)
     console.log(localStorage.token)
   } catch (error) {
     console.log(error);
@@ -155,7 +162,7 @@ const handleLogOut = () => {
 
   const handleDelete = async (event) => {
     try{
-      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}/destroy`, 
+      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
         {
         method:'DELETE',
         headers:{
@@ -167,20 +174,45 @@ const handleLogOut = () => {
   }
   }
 
+//========================
+//    Show Favorites
+//========================
+const [favs, setFavs] = useState([])
+const showFavs = async() =>{
+  try{
+    const getFavs = await fetch(`http://localhost:3000/ledgers/${localStorage.id}/whiskeys`);
+
+    const favData = await getFavs.json()
+    setFavs(favData)
+       console.log(favData)
+  } catch (error) {
+    console.error(error)
+  }
+  }
+//=======================
+//    Use Effect
+//=======================
   useEffect(() => {
     (async function () {
         await getData();
         if (localStorage.token){
           setIsLoggedIn(true);
+          if (localStorage.token === undefined){
+            setIsLoggedIn(false)
+          }
         }else {
           setIsLoggedIn(false)}
+          await showFavs();
     })();
-    }, [isLoggedIn]);
+    }, [/*isLoggedIn*/]);
+
 
   return (
     <div className="App">
 <Router>
      <nav>
+       { isLoggedIn ? 
+       <h1>Welcome {state.username}!</h1> : '' }
        <div>
          { isLoggedIn ? '' :
          <SignUp
@@ -203,10 +235,14 @@ const handleLogOut = () => {
            /> }
          </div>
         <div>
-          {isLoggedIn ? 
+        {isLoggedIn ? 
           <LogOut isLoggedIn={isLoggedIn} handleLogOut =
           {handleLogOut} /> : ''}
         </div>
+        {/* <div>
+        {isLoggedIn ? 
+          <Link to={MyFavs}>My Favorites </Link> : ''}
+        </div> */}
         <div className="newWhiskey">
           { isLoggedIn ?     
             <NewWhiskey 
@@ -219,10 +255,25 @@ const handleLogOut = () => {
       </Router>
     {/* </Switch> */}
       <main>
-       { /*</main><Route
-        path='/'
-        render={(props) => {
-          return */ }<Whiskeys /*isLoggedIn={isLoggedIn}*/whiskeyData = {whiskeys} handleDelete= {handleDelete}  />
+      {isLoggedIn ? 
+       <Whiskeys isLoggedIn={isLoggedIn}
+          whiskeyData = {whiskeys} 
+          handleDelete= {handleDelete}
+          state = {state} /> : ''}
+       { isLoggedIn ? 
+        <div>
+          <h1>Your Favorite Whiskeys, {localStorage.username}</h1>
+          { favs.map(fav => {
+            return(
+            <ul key={fav.whiskey_id}>
+              <li>{fav.whiskey.name}</li>
+              <li><img src={fav.whiskey.image} alt={fav.whiskey.name} /></li>
+            </ul>
+          )})}  
+    </div> : ''
+      }
+          {/* <MyFavs isLoggedIn={isLoggedIn}
+          favData = {favs}/> */}
       </main>
      
       
