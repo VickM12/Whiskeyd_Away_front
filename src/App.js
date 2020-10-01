@@ -8,6 +8,7 @@ import NewWhiskey from './components/NewWhiskey.js';
 import './App.css';
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
+import { response } from 'express';
 const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
 const PORT = process.env.DEV_PORT
 const imageEndPoint = process.env.AWS_API_ENDPOINT
@@ -109,15 +110,25 @@ const handleLogOut = () => {
 
   const handleSubmit = async (event) =>{
     event.preventDefault()
-    // const uploadHandler= async(event) =>{
+    const uploadHandler= async(event) =>{
+      const URL = imageEndPoint
+      const payload = {
+        method: 'POST',
+        mode: 'cors',
+        authorization: key
+      }
+      
       try {
-       const res = await axios.post(`${imageEndPoint}`, key, 
-       { fileState}) 
-      console.log(fileState.selectedFile)
-    .then(console.log(res))
-      }catch(error){
+       const res = await axios.post(URL, {
+         body: JSON.stringify(payload)
+        })
+      //  return res.json()
+    console.log(res)
+      } catch (error){
       console.log(error)
     }
+  }
+  uploadHandler()
     try {
       const response = await  fetch(/*`${endpoint}/whiskeys`,*/ `http://localhost:3000/whiskeys`, {
         body: JSON.stringify(formInputs, fileState.selectedFile),
