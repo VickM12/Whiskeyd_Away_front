@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 // import axios from 'axios'
 import AddToFav from '../components/AddToFav.js'
 export default function Whiskeys(props) {
-  
+  const state = props.state
 //   const getData = async() => {
 //   try {
 //     const response = await fetch('http://localhost:3000/whiskeys')
@@ -48,7 +48,7 @@ export default function Whiskeys(props) {
         <li><h3>{whiskey.origin}</h3></li>
         <AddToFav 
 				whiskey = {whiskey}
-				state = {props.state}
+				state= {state}
 				handleFavorites = {props.handleFavorites} />
       <button onClick={props.handleDelete}>Remove from List</button>
       </ul>

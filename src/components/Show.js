@@ -6,7 +6,7 @@ let PORT= 'http://localhost:3000/whiskeys'
 
 export default function Show(props) {
 	const [whiskey, showWhiskey] = useState({});
-	const [state, setState] = useState({})
+	// const [state, setState] = useState({})
 	const handleFavorites = props.handleFavorites
 
 	useEffect(() => {

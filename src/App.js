@@ -5,6 +5,7 @@ import LogInForm from './components/LogInForm.js'
 import LogOut from './components/LogOut.js'
 import Whiskeys from './components/Whiskeys.js';
 import NewWhiskey from './components/NewWhiskey.js';
+// import AddToFav from './components/AddToFav.js'
 import './App.css';
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
@@ -83,11 +84,10 @@ const handleLogIn = async (event) => {
       }
     });
     localStorage.token = response.data.token;
+    localStorage.id = response.data.user.id;
+    localStorage.username = response.data.user.username;
     setIsLoggedIn(true);
-    if (response.data.message === undefined){
-      setIsLoggedIn(false)
-    }
-    setState(response)
+    setState(state)
     console.log('response is ', response)
     console.log('state is ', state)
     console.log(`received token is ${response.data.token}`)
@@ -162,7 +162,7 @@ const handleLogOut = () => {
 
   const handleDelete = async (event) => {
     try{
-      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}/destroy`, 
+      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
         {
         method:'DELETE',
         headers:{
@@ -177,21 +177,22 @@ const handleLogOut = () => {
 //========================
 //    Add to Favorites
 //========================
-const handleFavorites= async (event)=>{
-  try{
-    const response = await axios.post('http://localhost:3000/ledgers', {
-      ledger: {
-        user_id: state.id,
-      whiskey_id: whiskeys.id
-      }
-    }
-    )
-console.log(response)
-} catch (error){
-console.log(error)
-  }
-}
-
+// const handleFavorites= async (event)=>{
+//   try{
+//     const response = await axios.post('http://localhost:3000/ledgers', { 
+//       ledger: {
+//         user_id: state.id,
+//       whiskey_id: whiskeys.id
+//       }
+//     }
+//     )
+//     console.log(ledger)
+// console.log(response)
+// } catch (error){
+// console.log(error)
+//   }
+// }
+console.log(state)
 //=======================
 //    Use Effect
 //=======================
@@ -213,6 +214,7 @@ console.log(error)
     <div className="App">
 <Router>
      <nav>
+       <h1>Welcome {state.username}!</h1>
        <div>
          { isLoggedIn ? '' :
          <SignUp
@@ -235,7 +237,7 @@ console.log(error)
            /> }
          </div>
         <div>
-          {isLoggedIn ? 
+        {isLoggedIn ? 
           <LogOut isLoggedIn={isLoggedIn} handleLogOut =
           {handleLogOut} /> : ''}
         </div>
@@ -251,13 +253,11 @@ console.log(error)
       </Router>
     {/* </Switch> */}
       <main>
-       { /*</main><Route
-        path='/'
-        render={(props) => {
-          return */ }<Whiskeys /*isLoggedIn={isLoggedIn}*/whiskeyData = {whiskeys} 
+      {isLoggedIn ? 
+       <Whiskeys isLoggedIn={isLoggedIn}
+          whiskeyData = {whiskeys} 
           handleDelete= {handleDelete}
-          handleFavorites= {handleFavorites} 
-          state = {state} />
+          state = {state} /> : ''}
       </main>
      
       
