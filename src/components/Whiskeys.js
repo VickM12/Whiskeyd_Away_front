@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 // import axios from 'axios'
-
+import AddToFav from '../components/AddToFav.js'
 export default function Whiskeys(props) {
   
 //   const getData = async() => {
@@ -46,6 +46,10 @@ export default function Whiskeys(props) {
         <li><img src={whiskey.image} alt={whiskey.name} /></li>
         <li><h3>{whiskey.distiller}</h3></li>
         <li><h3>{whiskey.origin}</h3></li>
+        <AddToFav 
+				whiskey = {whiskey}
+				state = {props.state}
+				handleFavorites = {props.handleFavorites} />
       <button onClick={props.handleDelete}>Remove from List</button>
       </ul>
       
