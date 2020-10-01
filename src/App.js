@@ -238,10 +238,10 @@ const showFavs = async() =>{
           <LogOut isLoggedIn={isLoggedIn} handleLogOut =
           {handleLogOut} /> : ''}
         </div>
-        <div>
+        {/* <div>
         {isLoggedIn ? 
           <Link to={MyFavs}>My Favorites </Link> : ''}
-        </div>
+        </div> */}
         <div className="newWhiskey">
           { isLoggedIn ?     
             <NewWhiskey 
@@ -259,7 +259,7 @@ const showFavs = async() =>{
           whiskeyData = {whiskeys} 
           handleDelete= {handleDelete}
           state = {state} /> : ''}
-          <MyFavs favData={favs}/>
+          {/* <MyFavs favData={favs}/> */}
       </main>
      
       
