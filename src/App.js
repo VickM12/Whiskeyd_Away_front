@@ -8,11 +8,11 @@ import NewWhiskey from './components/NewWhiskey.js';
 import './App.css';
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
-import { response } from 'express';
+// import { response } from 'express';
 const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
 const PORT = process.env.DEV_PORT
-const imageEndPoint = process.env.AWS_API_ENDPOINT
-const key = process.env.REACT_APP_AWS_API_KEY
+const imageEndPoint = process.env.REACT_APP_AWS_API_ENDPOINT
+const key = process.env.REACT_APP_API_KEY
 
 export default function App() {
   const [state, setState] = useState({
@@ -111,18 +111,23 @@ const handleLogOut = () => {
   const handleSubmit = async (event) =>{
     event.preventDefault()
     const uploadHandler= async(event) =>{
-      const URL = imageEndPoint
+      const URL = "https://7432uvppj5.execute-api.us-east-2.amazonaws.com/default/getPicture"
       const payload = {
-        method: 'POST',
-        mode: 'cors',
-        authorization: key
+        fileState
       }
-      
+      console.log(URL)
+      console.log(key)
       try {
-       const res = await axios.post(URL, {
-         body: JSON.stringify(payload)
+       const res = await axios.post(URL, key, {
+        headers: {
+          "Access-Control-Allow-Headers" : "application/json, image/jpg, image/png",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST,GET"
+        },         
+        body: JSON.stringify(payload)
         })
       //  return res.json()
+      console.log(payload)
     console.log(res)
       } catch (error){
       console.log(error)
