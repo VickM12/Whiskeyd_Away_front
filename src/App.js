@@ -5,9 +5,9 @@ import LogInForm from './components/LogInForm.js'
 import LogOut from './components/LogOut.js'
 import Whiskeys from './components/Whiskeys.js';
 import NewWhiskey from './components/NewWhiskey.js';
-// import AddToFav from './components/AddToFav.js'
+import MyFavs from './components/MyFavs.js'
 import './App.css';
-import { Route, Switch, BrowserRouter as Router } from "react-router-dom"
+import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
 const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
 const PORT = process.env.DEV_PORT
@@ -175,24 +175,20 @@ const handleLogOut = () => {
   }
 
 //========================
-//    Add to Favorites
+//    Show Favorites
 //========================
-// const handleFavorites= async (event)=>{
-//   try{
-//     const response = await axios.post('http://localhost:3000/ledgers', { 
-//       ledger: {
-//         user_id: state.id,
-//       whiskey_id: whiskeys.id
-//       }
-//     }
-//     )
-//     console.log(ledger)
-// console.log(response)
-// } catch (error){
-// console.log(error)
-//   }
-// }
-console.log(state)
+const [favs, setFavs] = useState([])
+const showFavs = async() =>{
+  try{
+    const getFavs = await fetch(`http://localhost:3000/ledgers/users/${localStorage.id}`);
+
+    const favData = await getFavs.json()
+    setFavs(favData)
+       console.log(favData)
+  } catch (error) {
+    console.error(error)
+  }
+  }
 //=======================
 //    Use Effect
 //=======================
@@ -206,6 +202,7 @@ console.log(state)
           }
         }else {
           setIsLoggedIn(false)}
+          await showFavs();
     })();
     }, [/*isLoggedIn*/]);
 
@@ -241,6 +238,10 @@ console.log(state)
           <LogOut isLoggedIn={isLoggedIn} handleLogOut =
           {handleLogOut} /> : ''}
         </div>
+        <div>
+        {isLoggedIn ? 
+          <Link to={MyFavs}>My Favorites </Link> : ''}
+        </div>
         <div className="newWhiskey">
           { isLoggedIn ?     
             <NewWhiskey 
@@ -258,6 +259,7 @@ console.log(state)
           whiskeyData = {whiskeys} 
           handleDelete= {handleDelete}
           state = {state} /> : ''}
+          <MyFavs favData={favs}/>
       </main>
      
       

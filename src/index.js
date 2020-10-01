@@ -6,7 +6,7 @@ import Show from './components/Show';
 import Edit from './components/Edit';
 import SignUp from './components/SignUp';
 import LogInForm from './components/LogInForm';
-import Whiskeys from './components/Whiskeys'
+import MyFavs from './components/MyFavs'
 import * as serviceWorker from './serviceWorker';
 import {
 	BrowserRouter as Router,
@@ -25,6 +25,11 @@ const routes = [
 		path: '/:id',
 		component: Show,
 		name: 'Show'
+	},
+	{
+		path: '/favorites',
+		component: MyFavs,
+		name: 'Favorites'
 	},
 	{
 		path: 'users/signup',
