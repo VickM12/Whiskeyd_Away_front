@@ -111,7 +111,7 @@ const handleLogOut = () => {
   const handleSubmit = async (event) =>{
     event.preventDefault()
     const uploadHandler= async(event) =>{
-      const URL = "https://7432uvppj5.execute-api.us-east-2.amazonaws.com/default/getPicture"
+      const URL = "https://cors-anywhere.herokuapp.com/https://7432uvppj5.execute-api.us-east-2.amazonaws.com/default/getPicture"
       const payload = {
         fileState
       }
