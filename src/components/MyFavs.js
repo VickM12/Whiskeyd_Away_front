@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 
 export default function MyFavs(props){
   // const [favs, setFavs] = useState([])
@@ -14,16 +14,16 @@ export default function MyFavs(props){
   //   }
   //   }
   
-//   return(
-//     <div>
-//       <h1>Your Favorite Whiskeys, {localStorage.username}</h1>
-//       {props.favs.map((fav) => {
-//         return(
-//         <ul key={fav.whiskey_id}>
-//           <li>{fav.whiskey.name}</li>
-//           <li><img src={fav.whiskey.image} alt={fav.whiskey.name} /></li>
-//         </ul>
-//       )})}
-//     </div>
-//   )
+  return(
+    <div>
+      <h1>Your Favorite Whiskeys, {localStorage.username}</h1>
+      {/* { props.favs.map(fav => {
+        return(
+        <ul key={fav.whiskey_id}>
+          <li>{fav.whiskey.name}</li>
+          <li><img src={fav.whiskey.image} alt={fav.whiskey.name} /></li>
+        </ul>
+      )})} */}
+    </div>
+  )
 }

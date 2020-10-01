@@ -5,7 +5,7 @@ import LogInForm from './components/LogInForm.js'
 import LogOut from './components/LogOut.js'
 import Whiskeys from './components/Whiskeys.js';
 import NewWhiskey from './components/NewWhiskey.js';
-import MyFavs from './components/MyFavs.js'
+// import MyFavs from './components/MyFavs.js'
 import './App.css';
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
@@ -180,7 +180,7 @@ const handleLogOut = () => {
 const [favs, setFavs] = useState([])
 const showFavs = async() =>{
   try{
-    const getFavs = await fetch(`http://localhost:3000/ledgers/users/${localStorage.id}`);
+    const getFavs = await fetch(`http://localhost:3000/ledgers/${localStorage.id}/whiskeys`);
 
     const favData = await getFavs.json()
     setFavs(favData)
@@ -211,7 +211,8 @@ const showFavs = async() =>{
     <div className="App">
 <Router>
      <nav>
-       <h1>Welcome {state.username}!</h1>
+       { isLoggedIn ? 
+       <h1>Welcome {state.username}!</h1> : '' }
        <div>
          { isLoggedIn ? '' :
          <SignUp
@@ -259,7 +260,20 @@ const showFavs = async() =>{
           whiskeyData = {whiskeys} 
           handleDelete= {handleDelete}
           state = {state} /> : ''}
-          {/* <MyFavs favData={favs}/> */}
+       { isLoggedIn ? 
+        <div>
+          <h1>Your Favorite Whiskeys, {localStorage.username}</h1>
+          { favs.map(fav => {
+            return(
+            <ul key={fav.whiskey_id}>
+              <li>{fav.whiskey.name}</li>
+              <li><img src={fav.whiskey.image} alt={fav.whiskey.name} /></li>
+            </ul>
+          )})}  
+    </div> : ''
+      }
+          {/* <MyFavs isLoggedIn={isLoggedIn}
+          favData = {favs}/> */}
       </main>
      
       
