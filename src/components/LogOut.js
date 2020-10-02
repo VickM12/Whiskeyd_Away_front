@@ -6,7 +6,7 @@ export default function LogOut(props) {
       <h2>Log Out</h2>
 
       <form>
-        <input value="Log Out" type="submit" onClick={props.handleLogOut} />
+        <input value="Log Out" type="submit" onClick={props.handleLogOut} className="submit"/>
       </form>
     </div>
   );

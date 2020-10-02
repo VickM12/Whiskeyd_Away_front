@@ -70,3 +70,32 @@ li{
   text-decoration: none;
   list-style: none;
 }
+li > a{
+  text-decoration: none;
+  color: black;
+  background: orange;
+  border-radius: 15px;
+}
+a{
+  text-decoration: none;
+  color: black;
+  background-color: orange;
+  border-radius: 15px; 
+}
+.submit{
+    height: 40px;
+    text-decoration: none;
+    background-color: orange;
+    padding: 5px;
+    border-radius: 15px
+}
+a:hover{
+  color:whitesmoke;
+}
+button{
+  height: 40px;
+  text-decoration: none;
+  background-color: orange;
+  padding: 5px;
+  border-radius: 15px
+}

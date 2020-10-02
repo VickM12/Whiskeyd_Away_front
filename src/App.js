@@ -215,7 +215,7 @@ const showFavs = async(event) =>{
 <Router>
      <nav>
        { isLoggedIn ? 
-       <h1>Welcome {state.username}!</h1> : '' }
+       <h1>Welcome {localStorage.username}!</h1> : '' }
        <div>
          { isLoggedIn ? '' :
          <SignUp
