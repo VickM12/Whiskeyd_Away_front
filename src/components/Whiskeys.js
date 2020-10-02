@@ -37,10 +37,12 @@ export default function Whiskeys(props) {
 //   })();
 // }, []);
   return(
-    <div>
-      <h1>Whiskey!</h1>
+    <div className="cardHolder">
+      {/* <h1>Whiskey!</h1> */}
+      
       { props.whiskeyData.map(whiskey => {
         return (
+      <div className='cards'>
       <ul key={whiskey.id}>
         <li><Link to={`/${whiskey.id}`}><h2>{whiskey.name}</h2></Link></li>
         <li><img src={whiskey.image} alt={whiskey.name} /></li>
@@ -52,9 +54,10 @@ export default function Whiskeys(props) {
 				handleFavorites = {props.handleFavorites} />
       <button onClick={props.handleDelete}>Remove from List</button>
       </ul>
-      
+      </div>
         )})
       }
+      
     </div>
   )
 

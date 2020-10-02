@@ -5,7 +5,7 @@ import LogInForm from './components/LogInForm.js'
 import LogOut from './components/LogOut.js'
 import Whiskeys from './components/Whiskeys.js';
 import NewWhiskey from './components/NewWhiskey.js';
-// import MyFavs from './components/MyFavs.js'
+import MyFavs from './components/MyFavs.js'
 import './App.css';
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
@@ -179,12 +179,13 @@ const handleLogOut = () => {
 //    Show Favorites
 //========================
 const [favs, setFavs] = useState([])
-const showFavs = async() =>{
+const showFavs = async(event) =>{
   try{
     const getFavs = await fetch(`http://localhost:3000/ledgers/${localStorage.id}/whiskeys`);
 
     const favData = await getFavs.json()
     setFavs(favData)
+    console.log(getFavs)
        console.log(favData)
   } catch (error) {
     console.error(error)
@@ -203,13 +204,14 @@ const showFavs = async() =>{
           }
         }else {
           setIsLoggedIn(false)}
-          await showFavs();
+          // await showFavs();
     })();
     }, [/*isLoggedIn*/]);
 
 
   return (
     <div className="App">
+      
 <Router>
      <nav>
        { isLoggedIn ? 
@@ -256,25 +258,35 @@ const showFavs = async() =>{
       </Router>
     {/* </Switch> */}
       <main>
-      {isLoggedIn ? 
+        <h1>The Whiskey List</h1>
+        <div className='whiskey'>
+      {isLoggedIn ?  
        <Whiskeys isLoggedIn={isLoggedIn}
           whiskeyData = {whiskeys} 
           handleDelete= {handleDelete}
           state = {state} /> : ''}
+          </div>
        { isLoggedIn ? 
-        <div>
+          <div>
           <h1>Your Favorite Whiskeys, {localStorage.username}</h1>
+          <button onClick={showFavs}>Show Favorite Whiskeys</button>
+           
+        <div className='favs'>
+          
           { favs.map(fav => {
             return(
+              <div className="favCards">
             <ul key={fav.whiskey_id}>
               <li><h2>{fav.whiskey.name}</h2></li>
               <li><img src={fav.whiskey.image} alt={fav.whiskey.name} /></li>
             </ul>
-          )})}  
-    </div> : ''
+            </div>
+            )})}  
+          </div> 
+        </div>: '' 
       }
-          {/* <MyFavs isLoggedIn={isLoggedIn}
-          favData = {favs}/> */}
+          {/* <MyFavs isLoggedIn={isLoggedIn} */}
+          {/* favData = {favs}/> */}
       </main>
      
       
