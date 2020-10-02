@@ -52,7 +52,7 @@ export default function App() {
 const handleRegister = async(event) =>{
   event.preventDefault();
   try{
-    const response = await axios.post(`${endpoint}/users`, {
+    const response = await axios.post(`${PORT}/users`, {
         user:{
         username: state.username,
         password: state.password
@@ -77,7 +77,7 @@ const handleRegister = async(event) =>{
 const handleLogIn = async (event) => {
   event.preventDefault();
   try {
-    const response = await axios.post(`${endpoint}/users/login`,{
+    const response = await axios.post(`http://localhost:3000/users/login`,{
       user:{
       id: state.id,
       username: state.username,
@@ -120,7 +120,7 @@ const handleLogOut = () => {
         body: JSON.stringify(formInputs),
         method:'POST',
         headers: {
-          'Accept': 'application/json, text/plain, password/plain */*',
+          'Accept': 'application/json, text/plain, text/password */*',
           'Content-Type': 'application/json'
         }
       })
@@ -163,13 +163,8 @@ const handleLogOut = () => {
 
   const handleDelete = async (event) => {
     try{
-     const deleteResponse = await fetch(`${endpoint}/whiskeys/${whiskeys.id}`, 
-        {
-        method:'DELETE',
-        headers:{
-          'Content-Type': 'application/json'
-        }
-      }).then(response => response.json())
+     const deleteResponse = await axios.delete(`${endpoint}/whiskeys/${whiskeys.id}` 
+       ).then(response => response.json())
       console.log(deleteResponse)
   }catch (error){
     console.log(error)
@@ -182,7 +177,7 @@ const handleLogOut = () => {
 const [favs, setFavs] = useState([])
 const showFavs = async(event) =>{
   try{
-    const getFavs = await fetch(`${endpoint}/ledgers/${localStorage.id}/whiskeys`);
+    const getFavs = await fetch(`http://localhost:3000/ledgers/${localStorage.id}/whiskeys`);
 
     const favData = await getFavs.json()
     setFavs(favData)
@@ -212,9 +207,9 @@ const showFavs = async(event) =>{
 
   return (
     <div className="App">
-      <AgeModal />
+      
 <Router>
-  
+  <AgeModal />
      <nav>
        { isLoggedIn ? 
        <h1>Welcome {localStorage.username}!</h1> : '' }

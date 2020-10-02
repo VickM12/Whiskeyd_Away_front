@@ -9,6 +9,13 @@ export default function AgeModal(props){
         setShow(false)
       }
     }
+    const load =() =>{
+      if (localStorage.token){
+        setShow(false)}
+          else{
+            setShow(true)
+        }
+    }
 
   const handleClose2=(event)=>{
     window.location.href="https://www.addictioncenter.com/teenage-drug-abuse/underage-drinking/"
@@ -19,6 +26,7 @@ export default function AgeModal(props){
     <>
 
       <Modal
+        
         show={show}
         onHide={handleClose}
         backdrop='static'
