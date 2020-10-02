@@ -162,13 +162,14 @@ const handleLogOut = () => {
 
   const handleDelete = async (event) => {
     try{
-      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
+     const deleteResponse = await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
         {
         method:'DELETE',
         headers:{
           'Content-Type': 'application/json'
         }
       }).then(response => response.json())
+      console.log(deleteResponse)
   }catch (error){
     console.log(error)
   }
@@ -266,7 +267,7 @@ const showFavs = async() =>{
           { favs.map(fav => {
             return(
             <ul key={fav.whiskey_id}>
-              <li>{fav.whiskey.name}</li>
+              <li><h2>{fav.whiskey.name}</h2></li>
               <li><img src={fav.whiskey.image} alt={fav.whiskey.name} /></li>
             </ul>
           )})}  
