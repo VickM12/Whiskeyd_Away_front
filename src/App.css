@@ -6,11 +6,19 @@
   flex-direction: column;
   background-color: rgb(245, 245, 245, 0.3);
 }
+
 body{
+  
   background-image: url('./components/imgs/barrel.jpg');
   size:cover;
   /* background-repeat: no-repeat; */
   
+}
+.modal{
+  background-color:Orange;
+  text-align: center;
+  height: 300px;
+  font-size: 40px
 }
 .new{
   display: flex;
@@ -19,6 +27,12 @@ body{
   /* background-color: rgb(245, 245, 245, 0.5); */
   /* width: 80%; */
   
+}
+
+.new > input{
+  border-radius: 15px;
+  padding: 5px;
+  box-sizing: border-box;
 }
 main{
   display: flex;
@@ -69,4 +83,33 @@ img{
 li{
   text-decoration: none;
   list-style: none;
+}
+li > a{
+  text-decoration: none;
+  color: black;
+  background: orange;
+  border-radius: 15px;
+}
+a{
+  text-decoration: none;
+  color: black;
+  background-color: orange;
+  border-radius: 15px; 
+}
+.submit{
+    height: 40px;
+    text-decoration: none;
+    background-color: orange;
+    padding: 5px;
+    border-radius: 15px
+}
+a:hover{
+  color:whitesmoke;
+}
+button{
+  height: 40px;
+  text-decoration: none;
+  background-color: orange;
+  padding: 5px;
+  border-radius: 15px
 }

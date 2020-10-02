@@ -44,7 +44,7 @@ export default function Whiskeys(props) {
         return (
       <div className='cards'>
       <ul key={whiskey.id}>
-        <li><Link to={`/${whiskey.id}`}><h2>{whiskey.name}</h2></Link></li>
+        <li><a  href={`/${whiskey.id}`}><h2>{whiskey.name}</h2></a></li>
         <li><img src={whiskey.image} alt={whiskey.name} /></li>
         <li><h3>{whiskey.distiller}</h3></li>
         <li><h3>{whiskey.origin}</h3></li>
@@ -52,7 +52,7 @@ export default function Whiskeys(props) {
 				whiskey = {whiskey}
 				state= {state}
 				handleFavorites = {props.handleFavorites} />
-      <button onClick={props.handleDelete}>Remove from List</button>
+      {/* <button onClick={props.handleDelete}>Remove from List</button> */}
       </ul>
       </div>
         )})

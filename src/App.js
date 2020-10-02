@@ -6,6 +6,7 @@ import LogOut from './components/LogOut.js'
 import Whiskeys from './components/Whiskeys.js';
 import NewWhiskey from './components/NewWhiskey.js';
 import MyFavs from './components/MyFavs.js'
+import AgeModal from './components/AgeModal.js'
 import './App.css';
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
@@ -199,7 +200,7 @@ const showFavs = async(event) =>{
         await getData();
         if (localStorage.token){
           setIsLoggedIn(true);
-          if (localStorage.token === undefined){
+          if (localStorage.token === 'undefined'){
             setIsLoggedIn(false)
           }
         }else {
@@ -211,11 +212,12 @@ const showFavs = async(event) =>{
 
   return (
     <div className="App">
-      
+      <AgeModal />
 <Router>
+  
      <nav>
        { isLoggedIn ? 
-       <h1>Welcome {state.username}!</h1> : '' }
+       <h1>Welcome {localStorage.username}!</h1> : '' }
        <div>
          { isLoggedIn ? '' :
          <SignUp
