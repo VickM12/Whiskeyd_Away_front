@@ -10,7 +10,7 @@ export default function SignUp(props){
           <input type='text' id='username' onChange={props.handleUserForm} /><br/>
           <label htmlFor='password'>Select a Password</label>
           <input type='text' id='password' onChange={props.handleUserForm} /><br/>
-          <input value='submit' type='submit' onClick={props.handleRegister} />
+          <input value='submit' type='submit'className="submit" onClick={props.handleRegister} />
       </form>
     </div>
   )

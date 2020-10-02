@@ -10,7 +10,7 @@ import AgeModal from './components/AgeModal.js'
 import './App.css';
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
-const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
+const endpoint = 'https://whiskey-api.herokuapp.com'
 const PORT = process.env.DEV_PORT
 
 export default function App() {
@@ -52,7 +52,7 @@ export default function App() {
 const handleRegister = async(event) =>{
   event.preventDefault();
   try{
-    const response = await axios.post('http://localhost:3000/users', {
+    const response = await axios.post(`${endpoint}/users`, {
         user:{
         username: state.username,
         password: state.password
@@ -77,7 +77,7 @@ const handleRegister = async(event) =>{
 const handleLogIn = async (event) => {
   event.preventDefault();
   try {
-    const response = await axios.post("http://localhost:3000/users/login",{
+    const response = await axios.post(`${endpoint}/users/login`,{
       user:{
       id: state.id,
       username: state.username,
@@ -116,7 +116,7 @@ const handleLogOut = () => {
   const handleSubmit = async (event) =>{
     event.preventDefault()
     try {
-      const response = await fetch(/*`${endpoint}/whiskeys`,*/ `${PORT}/whiskeys`, {
+      const response = await fetch(`${endpoint}/whiskeys`, {
         body: JSON.stringify(formInputs),
         method:'POST',
         headers: {
@@ -147,7 +147,7 @@ const handleLogOut = () => {
 //==================================
   const getData = async() =>{
     try {
-    const response = await fetch(/*`${endpoint}/whiskeys`, */`http://localhost:3000/whiskeys`)
+    const response = await fetch(`${endpoint}/whiskeys`, /*`http://localhost:3000/whiskeys`*/)
     
     const whiskeyData = await response.json()
     setWhiskeys(whiskeyData)
@@ -163,7 +163,7 @@ const handleLogOut = () => {
 
   const handleDelete = async (event) => {
     try{
-     const deleteResponse = await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
+     const deleteResponse = await fetch(`${endpoint}/whiskeys/${whiskeys.id}`, 
         {
         method:'DELETE',
         headers:{
@@ -182,7 +182,7 @@ const handleLogOut = () => {
 const [favs, setFavs] = useState([])
 const showFavs = async(event) =>{
   try{
-    const getFavs = await fetch(`http://localhost:3000/ledgers/${localStorage.id}/whiskeys`);
+    const getFavs = await fetch(`${endpoint}/ledgers/${localStorage.id}/whiskeys`);
 
     const favData = await getFavs.json()
     setFavs(favData)

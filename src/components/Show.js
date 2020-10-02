@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AddToFav from '../components/AddToFav.js';
 import { Link } from 'react-router-dom';
-let endpoint = 'https://whiskey-api.herokuapp.com/whiskeys';
+let endpoint = 'https://whiskey-api.herokuapp.com';
 let PORT= 'http://localhost:3000/whiskeys'
 
 export default function Show(props) {
@@ -12,7 +12,7 @@ export default function Show(props) {
 	useEffect(() => {
 		(async () => {
 			try {
-				const response = await fetch(/*`${endpoint}/${props.match.params.id}`*/ `http://localhost:3000/whiskeys/${props.match.params.id}`);
+				const response = await fetch(/*`${endpoint}/${props.match.params.id}`*/ `${endpoint}/whiskeys/${props.match.params.id}`);
 				const data = await response.json();
 				await showWhiskey(data);
 				console.log(response)
