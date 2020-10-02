@@ -10,7 +10,7 @@ import AgeModal from './components/AgeModal.js'
 import './App.css';
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
-const endpoint = 'https://whiskey-api.herokuapp.com'
+const endpoint = 'http://whiskey-api.herokuapp.com'
 const PORT = process.env.DEV_PORT
 
 export default function App() {
