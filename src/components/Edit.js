@@ -1,99 +1,104 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-let endpoint = '/api';
+import { Route, Link, BrowserRouter as Router } from "react-router-dom"
+import '../App.css'
+let endpoint ="https://whiskey-api.herokuapp.com/whiskeys";
 
-export default function Show(props) {
-	const [fruit, updateFruit] = useState({
+export default function Edit(props) {
+	const [whiskey, updateWhiskey] = useState({
 		name: '',
-		color: '',
-		readyToEat: ''
+		distiller: '',
+		origin: '',
+		image:''
 	});
-
 	useEffect(() => {
 		(async () => {
 			try {
-				const response = await fetch(`${endpoint}/${props.match.params.id}`);
+				const response = await fetch(/*`${endpoint}/${props.match.params.id}`*/ `http://localhost:3000/whiskeys/${props.match.params.id}`);
 				const data = await response.json();
-				await updateFruit(data);
+				await updateWhiskey(data);
 			} catch (e) {
 				console.error(e);
 			}
 		})();
 	}, []);
-
 	const handleSubmit = async event => {
 		event.preventDefault();
 		try {
-			const submission = { ...fruit };
-			!submission.readyToEat
-				? (submission.readyToEat = false)
-				: (submission.readyToEat = true);
-
-			// const response = await fetch('/api', {
-			// 	method: 'PUT',
-			// 	headers: {
-			// 		'Content-Type': 'application/json'
-			// 	},
-			// 	body: JSON.stringify(submission)
-			// });
-			const data = await response.json();
-			await updateFruit([...fruit, data]);
-			await updateFruit({
-				name: '',
-				color: '',
-				readyToEat: ''
+			const submission = { ...whiskey };
+						const response = await fetch(/*`${endpoint}/${props.match.params.id}`*/`http://localhost:3000/whiskeys/${props.match.params.id}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(submission)
 			});
+			const data = await response.json();
+			await updateWhiskey([...whiskey, data]);
+			await updateWhiskey({
+				name: '',
+				distiller: '',
+				origin: '',
+				image: ''
+			});
+			console.log(response)
+			console.log(whiskey)
 		} catch (e) {
 			console.error(e);
-			console.log(fruit);
+			console.log(whiskey);
 		}
 	};
-
 	return (
 		<div className="Page-wrapper">
-			{Object.keys(fruit).length > 0 ? (
+			{Object.keys(whiskey).length > 0 ? (
 				<div>
-					<h1>{fruit.name} Edit Page.</h1>
+					<h1>{whiskey.name} Edit Page.</h1>
 					<h2>
-						{fruit.name} is {fruit.color}.
+						{whiskey.name}
 					</h2>
-					<h2>
-						{fruit.name} is {fruit.readyToEat ? 'ready to eat' : ' not edible'}.
-					</h2>
+					<img src={whiskey.image} alt={whiskey.name}/>
 				</div>
 			) : (
 				<h1>Nothing found on {props.match.params.id}.</h1>
 			)}
 			<form onSubmit={handleSubmit} className="task-form">
-				<h1> Edit Fruit Form </h1>
+				<h1> Edit Whiskey Form </h1>
 				Name:{' '}
 				<input
 					type="text"
 					name="name"
 					id="name"
-					value={fruit.name}
-					onChange={updateFruit}
+					value={whiskey.name}
+					onChange={updateWhiskey}
 				/>
 				<br />
-				Color:{' '}
+				Distiller:{' '}
 				<input
 					type="text"
-					name="color"
-					id="color"
-					value={fruit.color}
-					onChange={updateFruit}
+					name="distiller"
+					id="distiller"
+					value={whiskey.distiller}
+					onChange={updateWhiskey}
 				/>
 				<br />
-				Is Ready To Eat:{' '}
+				Origin:{' '}
 				<input
-					type="checkbox"
-					name="readyToEat"
-					id="readyToEat"
-					value={fruit.readyToEat}
-					onChange={updateFruit}
+					type="text"
+					name="origin"
+					id="origin"
+					value={whiskey.origin}
+					onChange={updateWhiskey}
 				/>
 				<br />
-				<button type="submit">Submit Fruit</button>
+				Image:{' '}
+				<input
+					type="text"
+					name="image"
+					id="image"
+					value={whiskey.image}
+					onChange={updateWhiskey}
+				/>
+				<br />
+				<button type="submit">Submit Whiskey</button>
 			</form>
 			<h3>
 				<Link to={'/'}>Go Back Home</Link>
