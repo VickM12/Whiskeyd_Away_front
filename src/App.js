@@ -6,13 +6,19 @@ import LogOut from './components/LogOut.js'
 import Whiskeys from './components/Whiskeys.js';
 import NewWhiskey from './components/NewWhiskey.js';
 import './App.css';
+import aws, { CodeBuild } from 'aws-sdk'
+import multer from 'multer'
+import multerS3 from 'multer-s3'
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
 // import { response } from 'express';
+
+
 const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
 const PORT = process.env.DEV_PORT
 const imageEndPoint = process.env.REACT_APP_AWS_API_ENDPOINT
 const key = process.env.REACT_APP_API_KEY
+const id = process.env.AWS_ID
 
 export default function App() {
   const [state, setState] = useState({
@@ -44,6 +50,12 @@ export default function App() {
     image:''
   })
 
+aws.config.update({
+  secretAccessKey: key,
+  accessKeyId: id,
+  region: 'us-east-1'
+})
+const s3 = new aws.S3()
 //==================================
 //        Register New User
 //==================================
@@ -103,36 +115,53 @@ const handleLogOut = () => {
 };
 
 
+//==================================
+//        Upload Whiskey Image
+//==================================
 
+const fileChangedHandler = (req, fileState, cb)=>{
+  if (fileState.mimetype === 'image/jpeg' || fileState.mimetype === 'image/png'){
+    cb(null, true)
+  }else {
+    console.log('Invalid File Type, only jpg/png')
+    }
+}
 //==================================
 //        Submit New Whiskey
 //==================================
 
   const handleSubmit = async (event) =>{
     event.preventDefault()
-    const uploadHandler= async(event) =>{
-      const URL = `https://cors-anywhere.herokuapp.com/${imageEndPoint}`
-      const payload = {
-        fileState, key
-      }
-      console.log(URL)
-      console.log(key)
-      try {
-       const res = await axios.post(URL, key, {
-        headers: {
-          "Access-Control-Allow-Headers" : "application/json, image/jpg, image/png",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST,GET"
-        },         
-        body: JSON.stringify(payload)
-        })
-      //  return res.json()
-      console.log(payload)
-    console.log(res)
-      } catch (error){
-      console.log(error)
-    }
-  }
+    const uploadHandler= multer({
+      fileChangeHandler: this.fileChangeHandler,
+      storage: multerS3({
+        s3: s3,
+        bucket: 'whiskeydaway',
+        acl: 'public-read',
+        metadata: function(req, file, cb){
+          cb(null, {filedName: 'Test Data'})
+        },
+        key: function (req, file, cb){
+          cb(null, Date.now().toString())
+        }
+      })
+    })
+  //     try {
+  //      const res = await axios.post(URL, key, {
+  //       headers: {
+  //         "Access-Control-Allow-Headers" : "application/json, image/jpg, image/png",
+  //           "Access-Control-Allow-Origin": "*",
+  //           "Access-Control-Allow-Methods": "POST,GET"
+  //       },         
+  //       body: JSON.stringify(payload)
+  //       })
+  //     //  return res.json()
+  //     console.log(payload)
+  //   console.log(res)
+  //     } catch (error){
+  //     console.log(error)
+  //   }
+  // }
   uploadHandler()
     try {
       const response = await  fetch(/*`${endpoint}/whiskeys`,*/ `http://localhost:3000/whiskeys`, {
@@ -164,13 +193,7 @@ const handleLogOut = () => {
       image:''
     })
   }
-//==================================
-//        Upload Whiskey Image
-//==================================
 
-const fileChangedHandler = (event)=>{
-  setState({ selectedFile: event.target.files[0] })
-}
 
 //==================================
 //        Get Whiskey Data
