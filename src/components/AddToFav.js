@@ -7,7 +7,7 @@ export default function AddToFav(props){
 
 const handleFavorites= async (event)=>{
   try{
-    const response = await axios.post('http://localhost:3000/ledgers', {
+    const response = await axios.post(`${endpoint}/ledgers`, {
       ledger: {
         user_id: localStorage.id,
       whiskey_id: props.whiskey.id

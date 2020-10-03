@@ -52,13 +52,15 @@ export default function App() {
 const handleRegister = async(event) =>{
   event.preventDefault();
   try{
-    const response = await axios.post(`${PORT}/users`, {
+    const response = await axios.post(`${endpoint}/users`, {
         user:{
         username: state.username,
         password: state.password
         }
   })
   localStorage.token = response.data.token
+  localStorage.id = response.data.id
+  localStorage.username = response.data.username
   setIsLoggedIn(true)
   console.log(response)
   console.log(state)
@@ -77,7 +79,7 @@ const handleRegister = async(event) =>{
 const handleLogIn = async (event) => {
   event.preventDefault();
   try {
-    const response = await axios.post(`http://localhost:3000/users/login`,{
+    const response = await axios.post(`${endpoint}/users/login`,{
       user:{
       id: state.id,
       username: state.username,
@@ -177,7 +179,7 @@ const handleLogOut = () => {
 const [favs, setFavs] = useState([])
 const showFavs = async(event) =>{
   try{
-    const getFavs = await fetch(`http://localhost:3000/ledgers/${localStorage.id}/whiskeys`);
+    const getFavs = await fetch(`${endpoint}/ledgers/${localStorage.id}/whiskeys`);
 
     const favData = await getFavs.json()
     setFavs(favData)
@@ -209,7 +211,8 @@ const showFavs = async(event) =>{
     <div className="App">
       
 <Router>
-  <AgeModal />
+  { isLoggedIn ? '' :
+  <AgeModal /> }
      <nav>
        { isLoggedIn ? 
        <h1>Welcome {localStorage.username}!</h1> : '' }
