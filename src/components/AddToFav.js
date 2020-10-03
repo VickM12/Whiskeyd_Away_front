@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 const endpoint= 'https://whiskey-api.herokuapp.com'
+const PORT = 'http://localhost:3000'
 export default function AddToFav(props){
   
 
