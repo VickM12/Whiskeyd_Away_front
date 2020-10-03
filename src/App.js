@@ -62,8 +62,8 @@ const handleRegister = async(event) =>{
   localStorage.id = response.data.id
   localStorage.username = response.data.username
   setIsLoggedIn(true)
-  console.log(response)
-  console.log(state)
+  // console.log(response)
+  // console.log(state)
   .then(setState({
     user:{
         username: '',
@@ -91,10 +91,10 @@ const handleLogIn = async (event) => {
     localStorage.username = response.data.user.username;
     setIsLoggedIn(true);
     setState(state)
-    console.log('response is ', response)
-    console.log('state is ', state)
-    console.log(`received token is ${response.data.token}`)
-    console.log(localStorage.token)
+    // console.log('response is ', response)
+    // console.log('state is ', state)
+    // console.log(`received token is ${response.data.token}`)
+    // console.log(localStorage.token)
   } catch (error) {
     console.log(error);
   }
@@ -183,8 +183,8 @@ const showFavs = async(event) =>{
 
     const favData = await getFavs.json()
     setFavs(favData.whiskeys)
-    console.log(getFavs)
-       console.log(favData.whiskeys)
+    // console.log(getFavs)
+      //  console.log(favData.whiskeys)
   } catch (error) {
     console.error(error)
   }
