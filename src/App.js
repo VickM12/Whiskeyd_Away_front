@@ -11,7 +11,7 @@ import './App.css';
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
 const endpoint = 'https://whiskey-api.herokuapp.com'
-const PORT = process.env.DEV_PORT
+const PORT = 'http://localhost:3000'
 
 export default function App() {
   const [state, setState] = useState({
@@ -182,9 +182,9 @@ const showFavs = async(event) =>{
     const getFavs = await fetch(`${endpoint}/ledgers/${localStorage.id}/whiskeys`);
 
     const favData = await getFavs.json()
-    setFavs(favData)
+    setFavs(favData.whiskeys)
     console.log(getFavs)
-       console.log(favData)
+       console.log(favData.whiskeys)
   } catch (error) {
     console.error(error)
   }
@@ -277,8 +277,8 @@ const showFavs = async(event) =>{
             return(
               <div className="favCards">
             <ul key={fav.whiskey_id}>
-              <li><h2>{fav.whiskey.name}</h2></li>
-              <li><img src={fav.whiskey.image} alt={fav.whiskey.name} /></li>
+              <li><h2>{fav.name}</h2></li>
+              <li><img src={fav.image} alt={fav.name} /></li>
             </ul>
             </div>
             )})}  
