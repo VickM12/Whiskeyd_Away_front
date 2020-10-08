@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 // import NavBar from './components/NavBar.js'
+import {storage} from './firebase/firebase'
 import SignUp from './components/SignUp.js'
 import LogInForm from './components/LogInForm.js'
 import LogOut from './components/LogOut.js'
