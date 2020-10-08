@@ -120,13 +120,22 @@ const handleLogOut = () => {
 //        Upload Whiskey Image
 //==================================
 
-const fileChangedHandler = (req, fileState, cb)=>{
-  if (fileState.mimetype === 'image/jpeg' || fileState.mimetype === 'image/png'){
-    cb(null, true)
-  }else {
-    console.log('Invalid File Type, only jpg/png')
-    }
+const allInputs = {imgUrl: ''}
+  const [imageAsFile, setImageAsFile] = useState('')
+  const [imageAsUrl, setImageAsUrl] = useState(allInputs)
+console.log(imageAsFile)
+
+const fileChangedHandler = (event) => {
+  const image = event.target.files[0]
+  setImageAsFile(imageFile => (image))
 }
+// const fileChangedHandler = (req, fileState, cb)=>{
+//   if (fileState.mimetype === 'image/jpeg' || fileState.mimetype === 'image/png'){
+//     cb(null, true)
+//   }else {
+//     console.log('Invalid File Type, only jpg/png')
+//     }
+// }
 //==================================
 //        Submit New Whiskey
 //==================================
@@ -272,7 +281,7 @@ const fileChangedHandler = (req, fileState, cb)=>{
         <div className="newWhiskey">
           { isLoggedIn ?     
             <NewWhiskey 
-              fileChangedHandler= {fileChangedHandler}
+            fileChangedHandler = {fileChangedHandler}
               handleSubmit={handleSubmit}
               handleChange={handleChange}
               formInputs={formInputs} /> : ''

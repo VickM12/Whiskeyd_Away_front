@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/storage'
+import 'firebase/analytics'
 const fireBaseKey= process.env.REACT_APP_API_KEY_FIREBASE
 const measurementId=process.env.REACT_APP_MEASUREMENT_ID
 const senderID=process.env.REACT_APP_MESSAGING_SENDER_ID
