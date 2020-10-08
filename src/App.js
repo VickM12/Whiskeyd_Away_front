@@ -142,20 +142,26 @@ const fileChangedHandler = (event) => {
 
   const handleSubmit = async (event) =>{
     event.preventDefault()
-    const uploadHandler= multer({
-      fileChangeHandler: this.fileChangeHandler,
-      storage: multerS3({
-        s3: s3,
-        bucket: 'whiskeydaway',
-        acl: 'public-read',
-        metadata: function(req, file, cb){
-          cb(null, {filedName: 'Test Data'})
-        },
-        key: function (req, file, cb){
-          cb(null, Date.now().toString())
-        }
-      })
-    })
+    const uploadHandler= (event) =>{
+    console.log('start of upload')
+      if(imageAsFile === ''){
+        console.error(`not an image, the image file is a ${typeof(imageAsFile)}`)}
+        const uploadTask = storage.ref(`/images/${imageAsFile.name}`).put(imageAsFile)
+      }
+    // multer({
+    //   fileChangeHandler: this.fileChangeHandler,
+    //   storage: multerS3({
+    //     s3: s3,
+    //     bucket: 'whiskeydaway',
+    //     acl: 'public-read',
+    //     metadata: function(req, file, cb){
+    //       cb(null, {filedName: 'Test Data'})
+    //     },
+    //     key: function (req, file, cb){
+    //       cb(null, Date.now().toString())
+    //     }
+    //   })
+    // })
   //     try {
   //      const res = await axios.post(URL, key, {
   //       headers: {
