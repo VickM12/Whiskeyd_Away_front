@@ -41,6 +41,9 @@ export default function App() {
     const updateInput = Object.assign({}, formInputs, { [event.target.id]: event.target.value})
     updateFormInputs(updateInput)
   }
+const allInputs = {imgUrl: ''}
+  const [imageAsFile, setImageAsFile] = useState('')
+  const [imageAsUrl, setImageAsUrl] = useState(allInputs)
 
   const [whiskeys, setWhiskeys] = useState([])
   const fileState = {selectedFile: null}
@@ -48,7 +51,7 @@ export default function App() {
     name: '',
     distiller: '',
     origin:'',
-    image:''
+    image: imageAsUrl.imgUrl
   })
 
 aws.config.update({
@@ -120,10 +123,8 @@ const handleLogOut = () => {
 //        Upload Whiskey Image
 //==================================
 
-const allInputs = {imgUrl: ''}
-  const [imageAsFile, setImageAsFile] = useState('')
-  const [imageAsUrl, setImageAsUrl] = useState(allInputs)
-console.log(imageAsFile)
+
+// console.log(imageAsFile)
 
 const fileChangedHandler = (event) => {
   const image = event.target.files[0]
@@ -140,55 +141,55 @@ const fileChangedHandler = (event) => {
 //        Submit New Whiskey
 //==================================
 
-  const handleSubmit = async (event) =>{
-    event.preventDefault()
-    const uploadHandler= (event) =>{
+    const uploadHandler= async(event) =>{
+      // event.preventDefault()
+      try{
     console.log('start of upload')
       if(imageAsFile === ''){
         console.error(`not an image, the image file is a ${typeof(imageAsFile)}`)}
         const uploadTask = storage.ref(`/images/${imageAsFile.name}`).put(imageAsFile)
-      }
-    // multer({
-    //   fileChangeHandler: this.fileChangeHandler,
-    //   storage: multerS3({
-    //     s3: s3,
-    //     bucket: 'whiskeydaway',
-    //     acl: 'public-read',
-    //     metadata: function(req, file, cb){
-    //       cb(null, {filedName: 'Test Data'})
-    //     },
-    //     key: function (req, file, cb){
-    //       cb(null, Date.now().toString())
-    //     }
-    //   })
-    // })
-  //     try {
-  //      const res = await axios.post(URL, key, {
-  //       headers: {
-  //         "Access-Control-Allow-Headers" : "application/json, image/jpg, image/png",
-  //           "Access-Control-Allow-Origin": "*",
-  //           "Access-Control-Allow-Methods": "POST,GET"
-  //       },         
-  //       body: JSON.stringify(payload)
-  //       })
-  //     //  return res.json()
-  //     console.log(payload)
-  //   console.log(res)
-  //     } catch (error){
-  //     console.log(error)
-  //   }
-  // }
-  uploadHandler()
-    try {
-      const response = await  fetch(/*`${endpoint}/whiskeys`,*/ `http://localhost:3000/whiskeys`, {
-        body: JSON.stringify(formInputs, fileState.selectedFile),
+        uploadTask.on('state_changed', 
+        (snapShot) => {
+          //takes a snap shot of the process as it is happening
+          console.log(snapShot)
+        }, (err) => {
+          //catches the errors
+          console.log(err)
+        }, () => {
+          // gets the functions from storage refences the image storage in firebase by the children
+          // gets the download url then sets the image from firebase as the value for the imgUrl key:
+          storage.ref('images').child(imageAsFile.name).getDownloadURL()
+           .then(fireBaseUrl => {
+            setImageAsUrl(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
+            console.log(fireBaseUrl)
+             console.log(`image url is: ${imageAsUrl}`)
+           })
+        })
+        }catch(error){
+          console.log(error)
+        }
+  
+    }
+    const handleSubmit = async (event) =>{
+    event.preventDefault()
+    try{
+      // uploadHandler()
+      const response = await fetch(/*`${endpoint}/whiskeys`,*/ `http://localhost:3000/whiskeys`, {
+        body: JSON.stringify({whiskey: {
+          name: formInputs.name,
+          distiller: formInputs.distiller,
+          origin: formInputs.origin,
+          image: imageAsUrl.imgUrl
+        }
+      }),
         method:'POST',
         headers: {
           'Accept': 'application/json, text/plain, password/plain, image/jpeg, image/png,  */*',
           'Content-Type': 'application/json'
         }
       })
-      const data =/* await*/ response.json()
+      // console.log(response.image)
+      const data = await response.json()
      
       updateFormInputs({
         name: '',
@@ -200,14 +201,7 @@ const fileChangedHandler = (event) => {
       console.log(formInputs)
     } catch(error) {
       console.log(error)
-    }
-    
-    updateFormInputs({
-      name: '',
-      distiller: '',
-      origin:'',
-      image:''
-    })
+    }    
   }
 
 
@@ -221,6 +215,7 @@ const fileChangedHandler = (event) => {
     const whiskeyData = await response.json()
     setWhiskeys(whiskeyData)
        console.log(whiskeyData)
+       
   } catch (error) {
     console.error(error)
   }
@@ -232,7 +227,7 @@ const fileChangedHandler = (event) => {
 
   const handleDelete = async (event) => {
     try{
-      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}/destroy`, 
+      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
         {
         method:'DELETE',
         headers:{
@@ -289,7 +284,9 @@ const fileChangedHandler = (event) => {
             <NewWhiskey 
             fileChangedHandler = {fileChangedHandler}
               handleSubmit={handleSubmit}
+              uploadHandler={uploadHandler}
               handleChange={handleChange}
+              imageAsUrl={imageAsUrl}
               formInputs={formInputs} /> : ''
            }
         </div>
