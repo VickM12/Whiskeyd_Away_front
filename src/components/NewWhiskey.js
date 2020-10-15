@@ -17,8 +17,9 @@ export default function NewWhiskey(props){
          <input type='file' id='image' /*value={props.formInputs.image} */
          onChange={props.fileChangedHandler} /*onSubmit={props.uploadHandler}*/ />
          <button onClick={props.uploadHandler}>Preview Image</button>
-         <img src={props.imageAsUrl} alt="whiskey"/>
+         
          <input type="submit" className="submit"/>
        </form>
+       <img src={props.imageAsUrl.imgUrl} alt="whiskey"/>
     </div>
   )}

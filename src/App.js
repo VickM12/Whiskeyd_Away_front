@@ -51,7 +51,7 @@ const allInputs = {imgUrl: ''}
     name: '',
     distiller: '',
     origin:'',
-    image: imageAsUrl.imgUrl
+    image: ''
   })
 
 aws.config.update({
@@ -142,7 +142,7 @@ const fileChangedHandler = (event) => {
 //==================================
 
     const uploadHandler= async(event) =>{
-      // event.preventDefault()
+      event.preventDefault()
       try{
     console.log('start of upload')
       if(imageAsFile === ''){
