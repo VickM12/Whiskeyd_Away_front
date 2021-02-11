@@ -3,7 +3,19 @@ import { Button, Modal } from 'react-bootstrap'
 export default function AgeModal(props){
   const [show, setShow] = useState(true)
   const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
+  const handleShow = () => {
+    setShow(true);
+      if (localStorage.token){
+        setShow(false)
+      }
+    }
+    const load =() =>{
+      if (localStorage.token){
+        setShow(false)}
+          else{
+            setShow(true)
+        }
+    }
 
   const handleClose2=(event)=>{
     window.location.href="https://www.addictioncenter.com/teenage-drug-abuse/underage-drinking/"
@@ -14,9 +26,10 @@ export default function AgeModal(props){
     <>
 
       <Modal
+        
         show={show}
         onHide={handleClose}
-        backdrop={true}
+        backdrop='static'
         keyboard={false}
         // autoFocus={true}
         centered={true}
