@@ -1,3 +1,4 @@
+
 import React, {useState, useEffect} from 'react';
 // import NavBar from './components/NavBar.js'
 import {storage} from './firebase/firebase'
@@ -13,7 +14,8 @@ import aws, { CodeBuild } from 'aws-sdk'
 import multer from 'multer'
 import multerS3 from 'multer-s3'
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom"
-import axios from 'axios'
+import axios from 'axios';
+require('dotenv').config();
 // import { response } from 'express';
 // const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
 // const PORT = process.env.DEV_PORT
