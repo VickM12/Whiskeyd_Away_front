@@ -58,12 +58,12 @@ const allInputs = {imgUrl: ''}
     image: ''
   })
 
-aws.config.update({
-  secretAccessKey: key,
-  accessKeyId: id,
-  region: 'us-east-1'
-})
-const s3 = new aws.S3()
+// aws.config.update({
+//   secretAccessKey: key,
+//   accessKeyId: id,
+//   region: 'us-east-1'
+// })
+// const s3 = new aws.S3()
 //==================================
 //        Register New User
 //==================================
@@ -186,7 +186,7 @@ const fileChangedHandler = (event) => {
       
     try{
       // uploadHandler()
-      const response = await fetch(`${endpoint}/whiskeys`, /*`http://localhost:3000/whiskeys`*/, {
+      const response = await fetch(`${endpoint}/whiskeys`, /*`http://localhost:3000/whiskeys`*/ {
         body: JSON.stringify({whiskey: {
           name: formInputs.name,
           distiller: formInputs.distiller,
