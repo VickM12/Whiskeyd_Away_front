@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 // import NavBar from './components/NavBar.js'
+import {storage} from './firebase/firebase'
 import SignUp from './components/SignUp.js'
 import LogInForm from './components/LogInForm.js'
 import LogOut from './components/LogOut.js'
@@ -8,10 +9,20 @@ import NewWhiskey from './components/NewWhiskey.js';
 import MyFavs from './components/MyFavs.js'
 import AgeModal from './components/AgeModal.js'
 import './App.css';
+import aws, { CodeBuild } from 'aws-sdk'
+import multer from 'multer'
+import multerS3 from 'multer-s3'
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
+// import { response } from 'express';
+// const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
+// const PORT = process.env.DEV_PORT
+// const imageEndPoint = process.env.REACT_APP_AWS_API_ENDPOINT
+// const key = process.env.REACT_APP_API_KEY
+// const id = process.env.AWS_ID
 const endpoint = 'https://whiskey-api.herokuapp.com'
 const PORT = 'http://localhost:3000'
+
 
 export default function App() {
   const [state, setState] = useState({
@@ -34,16 +45,25 @@ export default function App() {
     const updateInput = Object.assign({}, formInputs, { [event.target.id]: event.target.value})
     updateFormInputs(updateInput)
   }
+const allInputs = {imgUrl: ''}
+  const [imageAsFile, setImageAsFile] = useState('')
+  const [imageAsUrl, setImageAsUrl] = useState(allInputs)
 
   const [whiskeys, setWhiskeys] = useState([])
-
+  const fileState = {selectedFile: null}
   const [formInputs, updateFormInputs] = useState({
     name: '',
     distiller: '',
     origin:'',
-    image:''
+    image: ''
   })
 
+aws.config.update({
+  secretAccessKey: key,
+  accessKeyId: id,
+  region: 'us-east-1'
+})
+const s3 = new aws.S3()
 //==================================
 //        Register New User
 //==================================
@@ -110,37 +130,90 @@ const handleLogOut = () => {
 };
 
 
+//==================================
+//        Upload Whiskey Image
+//==================================
 
+
+// console.log(imageAsFile)
+
+const fileChangedHandler = (event) => {
+  const image = event.target.files[0]
+  setImageAsFile(imageFile => (image))
+}
+// const fileChangedHandler = (req, fileState, cb)=>{
+//   if (fileState.mimetype === 'image/jpeg' || fileState.mimetype === 'image/png'){
+//     cb(null, true)
+//   }else {
+//     console.log('Invalid File Type, only jpg/png')
+//     }
+// }
 //==================================
 //        Submit New Whiskey
 //==================================
 
-  const handleSubmit = async (event) =>{
+    const uploadHandler= async(event) =>{
+      event.preventDefault()
+      try{
+    console.log('start of upload')
+      if(imageAsFile === ''){
+        console.error(`not an image, the image file is a ${typeof(imageAsFile)}`)}
+        const uploadTask = storage.ref(`/images/${imageAsFile.name}`).put(imageAsFile)
+        uploadTask.on('state_changed', 
+        (snapShot) => {
+          //takes a snap shot of the process as it is happening
+          console.log(snapShot)
+        }, (err) => {
+          //catches the errors
+          console.log(err)
+        }, () => {
+          // gets the functions from storage refences the image storage in firebase by the children
+          // gets the download url then sets the image from firebase as the value for the imgUrl key:
+          storage.ref('images').child(imageAsFile.name).getDownloadURL()
+           .then(fireBaseUrl => {
+            setImageAsUrl(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
+            console.log(fireBaseUrl)
+             console.log(`image url is: ${imageAsUrl}`)
+           })
+        })
+        }catch(error){
+          console.log(error)
+        }
+  
+    }
+    const handleSubmit = async (event) =>{
     event.preventDefault()
-    try {
-      const response = await fetch(`${endpoint}/whiskeys`, {
-        body: JSON.stringify(formInputs),
+      
+    try{
+      // uploadHandler()
+      const response = await fetch(`${endpoint}/whiskeys`, /*`http://localhost:3000/whiskeys`*/, {
+        body: JSON.stringify({whiskey: {
+          name: formInputs.name,
+          distiller: formInputs.distiller,
+          origin: formInputs.origin,
+          image: imageAsUrl.imgUrl
+        }
+      }),
         method:'POST',
         headers: {
-          'Accept': 'application/json, text/plain, text/password */*',
+          'Accept': 'application/json, text/plain, password/plain, image/jpeg, image/png,  */*',
           'Content-Type': 'application/json'
         }
       })
+      // console.log(response.image)
       const data = await response.json()
+     
       updateFormInputs({
         name: '',
         distiller: '',
         origin:'',
         image:''
       })
-
-      
       setWhiskeys([data, ...whiskeys])
       console.log(formInputs)
-    }catch(error) {
+    } catch(error) {
       console.log(error)
-    }
-    
+    }    
   }
 
 
@@ -154,6 +227,7 @@ const handleLogOut = () => {
     const whiskeyData = await response.json()
     setWhiskeys(whiskeyData)
        console.log(whiskeyData)
+       
   } catch (error) {
     console.error(error)
   }
@@ -249,8 +323,11 @@ const showFavs = async(event) =>{
         <div className="newWhiskey">
           { isLoggedIn ?     
             <NewWhiskey 
+            fileChangedHandler = {fileChangedHandler}
               handleSubmit={handleSubmit}
+              uploadHandler={uploadHandler}
               handleChange={handleChange}
+              imageAsUrl={imageAsUrl}
               formInputs={formInputs} /> : ''
            }
         </div>
@@ -293,4 +370,3 @@ const showFavs = async(event) =>{
     </div>
   );
 }
-
