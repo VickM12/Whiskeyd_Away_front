@@ -15,13 +15,14 @@ import multerS3 from 'multer-s3'
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
 // import { response } from 'express';
+// const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
+// const PORT = process.env.DEV_PORT
+// const imageEndPoint = process.env.REACT_APP_AWS_API_ENDPOINT
+// const key = process.env.REACT_APP_API_KEY
+// const id = process.env.AWS_ID
+const endpoint = 'https://whiskey-api.herokuapp.com'
+const PORT = 'http://localhost:3000'
 
-
-const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
-const PORT = process.env.DEV_PORT
-const imageEndPoint = process.env.REACT_APP_AWS_API_ENDPOINT
-const key = process.env.REACT_APP_API_KEY
-const id = process.env.AWS_ID
 
 export default function App() {
   const [state, setState] = useState({
@@ -71,16 +72,18 @@ const s3 = new aws.S3()
 const handleRegister = async(event) =>{
   event.preventDefault();
   try{
-    const response = await axios.post('http://localhost:3000/users', {
+    const response = await axios.post(`${endpoint}/users`, {
         user:{
         username: state.username,
         password: state.password
         }
   })
   localStorage.token = response.data.token
+  localStorage.id = response.data.id
+  localStorage.username = response.data.username
   setIsLoggedIn(true)
-  console.log(response)
-  console.log(state)
+  // console.log(response)
+  // console.log(state)
   .then(setState({
     user:{
         username: '',
@@ -96,7 +99,7 @@ const handleRegister = async(event) =>{
 const handleLogIn = async (event) => {
   event.preventDefault();
   try {
-    const response = await axios.post("http://localhost:3000/users/login",{
+    const response = await axios.post(`${endpoint}/users/login`,{
       user:{
       id: state.id,
       username: state.username,
@@ -108,10 +111,10 @@ const handleLogIn = async (event) => {
     localStorage.username = response.data.user.username;
     setIsLoggedIn(true);
     setState(state)
-    console.log('response is ', response)
-    console.log('state is ', state)
-    console.log(`received token is ${response.data.token}`)
-    console.log(localStorage.token)
+    // console.log('response is ', response)
+    // console.log('state is ', state)
+    // console.log(`received token is ${response.data.token}`)
+    // console.log(localStorage.token)
   } catch (error) {
     console.log(error);
   }
@@ -180,9 +183,10 @@ const fileChangedHandler = (event) => {
     }
     const handleSubmit = async (event) =>{
     event.preventDefault()
+      
     try{
       // uploadHandler()
-      const response = await fetch(/*`${endpoint}/whiskeys`,*/ `http://localhost:3000/whiskeys`, {
+      const response = await fetch(`${endpoint}/whiskeys`, /*`http://localhost:3000/whiskeys`*/, {
         body: JSON.stringify({whiskey: {
           name: formInputs.name,
           distiller: formInputs.distiller,
@@ -218,7 +222,7 @@ const fileChangedHandler = (event) => {
 //==================================
   const getData = async() =>{
     try {
-    const response = await fetch(/*`${endpoint}/whiskeys`, */`http://localhost:3000/whiskeys`)
+    const response = await fetch(`${endpoint}/whiskeys`, /*`http://localhost:3000/whiskeys`*/)
     
     const whiskeyData = await response.json()
     setWhiskeys(whiskeyData)
@@ -235,13 +239,8 @@ const fileChangedHandler = (event) => {
 
   const handleDelete = async (event) => {
     try{
-     const deleteResponse = await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
-        {
-        method:'DELETE',
-        headers:{
-          'Content-Type': 'application/json'
-        }
-      }).then(response => response.json())
+     const deleteResponse = await axios.delete(`${endpoint}/whiskeys/${whiskeys.id}` 
+       ).then(response => response.json())
       console.log(deleteResponse)
   }catch (error){
     console.log(error)
@@ -254,12 +253,12 @@ const fileChangedHandler = (event) => {
 const [favs, setFavs] = useState([])
 const showFavs = async(event) =>{
   try{
-    const getFavs = await fetch(`http://localhost:3000/ledgers/${localStorage.id}/whiskeys`);
+    const getFavs = await fetch(`${endpoint}/ledgers/${localStorage.id}/whiskeys`);
 
     const favData = await getFavs.json()
-    setFavs(favData)
-    console.log(getFavs)
-       console.log(favData)
+    setFavs(favData.whiskeys)
+    // console.log(getFavs)
+      //  console.log(favData.whiskeys)
   } catch (error) {
     console.error(error)
   }
@@ -284,9 +283,10 @@ const showFavs = async(event) =>{
 
   return (
     <div className="App">
-      <AgeModal />
+      
 <Router>
-  
+  { isLoggedIn ? '' :
+  <AgeModal /> }
      <nav>
        { isLoggedIn ? 
        <h1>Welcome {localStorage.username}!</h1> : '' }
@@ -354,8 +354,8 @@ const showFavs = async(event) =>{
             return(
               <div className="favCards">
             <ul key={fav.whiskey_id}>
-              <li><h2>{fav.whiskey.name}</h2></li>
-              <li><img src={fav.whiskey.image} alt={fav.whiskey.name} /></li>
+              <li><h2>{fav.name}</h2></li>
+              <li><img src={fav.image} alt={fav.name} /></li>
             </ul>
             </div>
             )})}  
