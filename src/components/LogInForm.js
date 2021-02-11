@@ -14,7 +14,7 @@ export default function LogInForm(props) {
           <label htmlFor="password">Password</label>
           <input type="text" id="password" onChange={props.handleUserForm} />
         </div>
-        <input value="Submit" type="submit" onClick={props.handleLogIn} />
+        <input value="Submit" className="submit" type="submit" onClick={props.handleLogIn} />
       </form>
     </div>
   );

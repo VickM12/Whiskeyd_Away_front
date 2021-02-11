@@ -6,11 +6,13 @@ import LogInForm from './components/LogInForm.js'
 import LogOut from './components/LogOut.js'
 import Whiskeys from './components/Whiskeys.js';
 import NewWhiskey from './components/NewWhiskey.js';
+import MyFavs from './components/MyFavs.js'
+import AgeModal from './components/AgeModal.js'
 import './App.css';
 import aws, { CodeBuild } from 'aws-sdk'
 import multer from 'multer'
 import multerS3 from 'multer-s3'
-import { Route, Switch, BrowserRouter as Router } from "react-router-dom"
+import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios'
 // import { response } from 'express';
 
@@ -24,6 +26,7 @@ const id = process.env.AWS_ID
 export default function App() {
   const [state, setState] = useState({
     user:{
+    id: '',
     username: '',
     password: '',
     isLoggedIn: false
@@ -95,14 +98,19 @@ const handleLogIn = async (event) => {
   try {
     const response = await axios.post("http://localhost:3000/users/login",{
       user:{
+      id: state.id,
       username: state.username,
       password: state.password,
       }
     });
     localStorage.token = response.data.token;
+    localStorage.id = response.data.user.id;
+    localStorage.username = response.data.user.username;
     setIsLoggedIn(true);
+    setState(state)
     console.log('response is ', response)
     console.log('state is ', state)
+    console.log(`received token is ${response.data.token}`)
     console.log(localStorage.token)
   } catch (error) {
     console.log(error);
@@ -227,32 +235,61 @@ const fileChangedHandler = (event) => {
 
   const handleDelete = async (event) => {
     try{
-      await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
+     const deleteResponse = await fetch(`http://localhost/3000/whiskeys/${whiskeys.id}`, 
         {
         method:'DELETE',
         headers:{
           'Content-Type': 'application/json'
         }
       }).then(response => response.json())
+      console.log(deleteResponse)
   }catch (error){
     console.log(error)
   }
   }
 
+//========================
+//    Show Favorites
+//========================
+const [favs, setFavs] = useState([])
+const showFavs = async(event) =>{
+  try{
+    const getFavs = await fetch(`http://localhost:3000/ledgers/${localStorage.id}/whiskeys`);
+
+    const favData = await getFavs.json()
+    setFavs(favData)
+    console.log(getFavs)
+       console.log(favData)
+  } catch (error) {
+    console.error(error)
+  }
+  }
+//=======================
+//    Use Effect
+//=======================
   useEffect(() => {
     (async function () {
         await getData();
         if (localStorage.token){
           setIsLoggedIn(true);
+          if (localStorage.token === 'undefined'){
+            setIsLoggedIn(false)
+          }
         }else {
           setIsLoggedIn(false)}
+          // await showFavs();
     })();
-    }, [isLoggedIn]);
+    }, [/*isLoggedIn*/]);
+
 
   return (
     <div className="App">
+      <AgeModal />
 <Router>
+  
      <nav>
+       { isLoggedIn ? 
+       <h1>Welcome {localStorage.username}!</h1> : '' }
        <div>
          { isLoggedIn ? '' :
          <SignUp
@@ -275,10 +312,14 @@ const fileChangedHandler = (event) => {
            /> }
          </div>
         <div>
-          {isLoggedIn ? 
+        {isLoggedIn ? 
           <LogOut isLoggedIn={isLoggedIn} handleLogOut =
           {handleLogOut} /> : ''}
         </div>
+        {/* <div>
+        {isLoggedIn ? 
+          <Link to={MyFavs}>My Favorites </Link> : ''}
+        </div> */}
         <div className="newWhiskey">
           { isLoggedIn ?     
             <NewWhiskey 
@@ -294,10 +335,35 @@ const fileChangedHandler = (event) => {
       </Router>
     {/* </Switch> */}
       <main>
-       { /*</main><Route
-        path='/'
-        render={(props) => {
-          return */ }<Whiskeys /*isLoggedIn={isLoggedIn}*/whiskeyData = {whiskeys} handleDelete= {handleDelete}  />
+        <h1>The Whiskey List</h1>
+        <div className='whiskey'>
+      {isLoggedIn ?  
+       <Whiskeys isLoggedIn={isLoggedIn}
+          whiskeyData = {whiskeys} 
+          handleDelete= {handleDelete}
+          state = {state} /> : ''}
+          </div>
+       { isLoggedIn ? 
+          <div>
+          <h1>Your Favorite Whiskeys, {localStorage.username}</h1>
+          <button onClick={showFavs}>Show Favorite Whiskeys</button>
+           
+        <div className='favs'>
+          
+          { favs.map(fav => {
+            return(
+              <div className="favCards">
+            <ul key={fav.whiskey_id}>
+              <li><h2>{fav.whiskey.name}</h2></li>
+              <li><img src={fav.whiskey.image} alt={fav.whiskey.name} /></li>
+            </ul>
+            </div>
+            )})}  
+          </div> 
+        </div>: '' 
+      }
+          {/* <MyFavs isLoggedIn={isLoggedIn} */}
+          {/* favData = {favs}/> */}
       </main>
      
       

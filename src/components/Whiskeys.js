@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 // import axios from 'axios'
-
+import AddToFav from '../components/AddToFav.js'
 export default function Whiskeys(props) {
-  
+  const state = props.state
 //   const getData = async() => {
 //   try {
 //     const response = await fetch('http://localhost:3000/whiskeys')
@@ -37,20 +37,27 @@ export default function Whiskeys(props) {
 //   })();
 // }, []);
   return(
-    <div>
-      <h1>Whiskey!</h1>
+    <div className="cardHolder">
+      {/* <h1>Whiskey!</h1> */}
+      
       { props.whiskeyData.map(whiskey => {
         return (
+      <div className='cards'>
       <ul key={whiskey.id}>
-        <li><Link to={`/${whiskey.id}`}><h2>{whiskey.name}</h2></Link></li>
+        <li><a  href={`/${whiskey.id}`}><h2>{whiskey.name}</h2></a></li>
         <li><img src={whiskey.image} alt={whiskey.name} /></li>
         <li><h3>{whiskey.distiller}</h3></li>
         <li><h3>{whiskey.origin}</h3></li>
-      <button onClick={props.handleDelete}>Remove from List</button>
+        <AddToFav 
+				whiskey = {whiskey}
+				state= {state}
+				handleFavorites = {props.handleFavorites} />
+      {/* <button onClick={props.handleDelete}>Remove from List</button> */}
       </ul>
-      
+      </div>
         )})
       }
+      
     </div>
   )
 
