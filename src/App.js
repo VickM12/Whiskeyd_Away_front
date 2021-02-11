@@ -218,7 +218,7 @@ const fileChangedHandler = (event) => {
 //==================================
   const getData = async() =>{
     try {
-    const response = await fetch(/*`${endpoint}/whiskeys`, */`http://localhost:3000/whiskeys`)
+    const response = await fetch(`${endpoint}/whiskeys`, /*`http://localhost:3000/whiskeys`*/)
     
     const whiskeyData = await response.json()
     setWhiskeys(whiskeyData)

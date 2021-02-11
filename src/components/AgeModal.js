@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Button, Modal } from 'react-bootstrap/'
+import { Button, Modal } from 'react-bootstrap'
 export default function AgeModal(props){
   const [show, setShow] = useState(true)
   const handleClose = () => setShow(false)
