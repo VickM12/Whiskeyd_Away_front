@@ -22,7 +22,7 @@ export default function MyFavs(props){
         return(
         <ul key={fav.whiskey_id}>
           <li>{fav.whiskey.name}</li>
-          <li><img src={fav.whiskey.image} alt={fav.whiskey.name} /></li>
+          <li><img className="favWhiskeyImg"  src={fav.whiskey.image} alt={fav.whiskey.name} /></li>
         </ul>
       )})}
     </div>

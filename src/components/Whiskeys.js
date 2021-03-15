@@ -45,7 +45,7 @@ export default function Whiskeys(props) {
       <div className='cards'>
       <ul key={whiskey.id}>
         <li><a  href={`/${whiskey.id}`}><h2>{whiskey.name}</h2></a></li>
-        <li><img src={whiskey.image} alt={whiskey.name} /></li>
+        <li><img className="whiskeyImg" src={whiskey.image} alt={whiskey.name} /></li>
         <li><h3>{whiskey.distiller}</h3></li>
         <li><h3>{whiskey.origin}</h3></li>
         <AddToFav 
