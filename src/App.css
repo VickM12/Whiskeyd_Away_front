@@ -20,6 +20,20 @@ body{
   height: 300px;
   font-size: 40px
 }
+nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+}
+#logo{
+  display: flex;
+  justify-content: center;
+}
+#logo > img{
+  max-width: 50%;
+  height: 220px;
+}
 .new{
   display: flex;
   flex-direction:column;
@@ -40,9 +54,13 @@ main{
   justify-content: center;
   flex-wrap: wrap;
 }
-img{
+.whiskeyImg{
   max-width: 45%;
   height:auto;
+}
+.favWhiskeyImg{
+  max-width: 45%;
+  height: auto;
 }
 .whiskey{
   display: flex;
@@ -113,3 +131,4 @@ button{
   padding: 5px;
   border-radius: 15px
 }
+

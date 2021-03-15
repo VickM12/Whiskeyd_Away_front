@@ -15,6 +15,7 @@ import multer from 'multer'
 import multerS3 from 'multer-s3'
 import { Route, Link, Switch, BrowserRouter as Router } from "react-router-dom"
 import axios from 'axios';
+import distilldLogo from './components/imgs/DistilldTM.jpg';
 require('dotenv').config();
 // import { response } from 'express';
 // const endpoint = 'https://whiskey-api.herokuapp.com/whiskeys'
@@ -290,6 +291,9 @@ const showFavs = async(event) =>{
   { isLoggedIn ? '' :
   <AgeModal /> }
      <nav>
+       <div id="logo">
+         <img src={distilldLogo} alt="Distilld Logo" />
+       </div>
        { isLoggedIn ? 
        <h1>Welcome {localStorage.username}!</h1> : '' }
        <div>
@@ -357,7 +361,7 @@ const showFavs = async(event) =>{
               <div className="favCards">
             <ul key={fav.whiskey_id}>
               <li><h2>{fav.name}</h2></li>
-              <li><img src={fav.image} alt={fav.name} /></li>
+              <li><img className="favWhiskeyImg" src={fav.image} alt={fav.name} /></li>
             </ul>
             </div>
             )})}  
